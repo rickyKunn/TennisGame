@@ -1,7 +1,14 @@
 fileFormatVersion: 2
-guid: f71497880e2d64b5dbb12af0517353fe
+guid: ec536a7718376554185e4a856d5ae230
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 107631
+  packageName: Joystick Pack
+  packageVersion: 2.1
+  assetPath: Assets/Joystick Pack/Prefabs/Variable Joystick.prefab
+  uploadId: 301683

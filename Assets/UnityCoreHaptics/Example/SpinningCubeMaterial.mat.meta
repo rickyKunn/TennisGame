@@ -1,8 +1,15 @@
 fileFormatVersion: 2
-guid: 261bb7906aa3043cfbd13e7e49618b7a
+guid: b7cb509d6422446968094d690067f285
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173817
+  packageName: Core Haptics Plugin for iOS 13+
+  packageVersion: 1.0
+  assetPath: Assets/UnityCoreHaptics/Example/SpinningCubeMaterial.mat
+  uploadId: 376365

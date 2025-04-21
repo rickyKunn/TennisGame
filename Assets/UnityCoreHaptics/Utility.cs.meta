@@ -1,2 +1,18 @@
 fileFormatVersion: 2
-guid: 0cd68aa47c9ec4961a2eb2e74d59825d
+guid: 804f4ec1af4244afb8da7cadfda8b196
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173817
+  packageName: Core Haptics Plugin for iOS 13+
+  packageVersion: 1.0
+  assetPath: Assets/UnityCoreHaptics/Utility.cs
+  uploadId: 376365

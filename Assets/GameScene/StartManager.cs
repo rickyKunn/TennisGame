@@ -1,75 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
-namespace Asteroids.SharedSimple
+public class GameLauncher : MonoBehaviour
 {
-    // A utility class which defines the behaviour of the various buttons and input fields found in the Menu scene
-    public class StartManager : MonoBehaviour
+    [SerializeField] private NetworkRunner _networkRunnerPrefab;
+    [SerializeField] private GameObject LoadParticle;
+
+    private NetworkRunner _runnerInstance;
+
+    /// <summary>
+    /// Fusion 2 用シーン遷移付き StartGame
+    /// </summary>
+    private async Task StartGameAsync(GameMode mode, string roomName, string sceneName)
     {
-        [SerializeField] private NetworkRunner _networkRunnerPrefab = null;
-        [SerializeField] private PlayerData _playerDataPrefab = null;
+        // ローディング演出
+        Instantiate(LoadParticle, new Vector3(0, -3, 0), Quaternion.identity);
 
-        [SerializeField] private TMP_InputField _nickName = null;
+        _runnerInstance = FindObjectOfType<NetworkRunner>() ??
+                          Instantiate(_networkRunnerPrefab);
+        _runnerInstance.ProvideInput = true;
 
-        // The Placeholder Text is not accessible through the TMP_InputField component so need a direct reference
-        [SerializeField] private TextMeshProUGUI _nickNamePlaceholder = null;
-
-        [SerializeField] private TMP_InputField _roomName = null;
-        [SerializeField] private string _gameSceneName = null;
-        [SerializeField] private GameObject LoadParticle;
-        private NetworkRunner _runnerInstance = null;
-
-        // Attempts to start a new game session 
-        public void StartSharedSession()
+        // 開始パラメータ
+        var startArgs = new StartGameArgs
         {
-            SetPlayerData();
-            StartGame(GameMode.Shared, _roomName.text, _gameSceneName);
-            Destroy(this.gameObject);
+            GameMode = mode,
+            SessionName = roomName,
+            PlayerCount = 2,
+        };
+
+        // セッション開始
+        var result = await _runnerInstance.StartGame(startArgs);
+        if (!result.Ok)
+        {
+            Debug.LogError($"StartGame failed: {result.ShutdownReason}");
+            return;
         }
 
-        private void SetPlayerData()
-        {
-            var playerData = FindObjectOfType<PlayerData>();
-            if (playerData == null)
-            {
-                playerData = Instantiate(_playerDataPrefab);
-            }
+        int buildIndex = SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{sceneName}.unity");
+        var target = SceneRef.FromIndex(buildIndex);
 
-            if (string.IsNullOrWhiteSpace(_nickName.text))
-            {
-                playerData.SetNickName(_nickNamePlaceholder.text);
-            }
-            else
-            {
-                playerData.SetNickName(_nickName.text);
-            }
-        }
-
-        private async void StartGame(GameMode mode, string roomName, string sceneName) //シーン遷移
-        {
-            Instantiate(LoadParticle,new Vector3(0,-3,0),Quaternion.identity);
-            _runnerInstance = FindObjectOfType<NetworkRunner>();
-            if (_runnerInstance == null)
-            {
-                _runnerInstance = Instantiate(_networkRunnerPrefab);
-            }
-            _runnerInstance.ProvideInput = true;
-
-            print(roomName);
-
-            var startGameArgs = new StartGameArgs() //プロパティ
-            {
-                GameMode = mode, //共有モード
-                SessionName = roomName,  //ルーム名
-                PlayerCount = 2, //最大人数2人
-            };
-
-            await _runnerInstance.StartGame(startGameArgs);            
-            _runnerInstance.SetActiveScene(sceneName);
-            
-        }
+        await _runnerInstance.LoadScene(target, LoadSceneMode.Single);
     }
 }

@@ -6,9 +6,9 @@ using Fusion.Sockets;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
-public class playerManager : SimulationBehaviour, IPlayerJoined,INetworkRunnerCallbacks
+public class playerManager : SimulationBehaviour, IPlayerJoined, INetworkRunnerCallbacks
 {
-    
+
     public GameObject PlayerPrefab;
     public GameObject NPCPlayerPrefab;
     public int id;
@@ -31,13 +31,13 @@ public class playerManager : SimulationBehaviour, IPlayerJoined,INetworkRunnerCa
         Debug.Log("Unityエディタ");
 #elif UNITY_ANDROID
         Device = "Android";
-　      Debug.Log("Android");
+        Debug.Log("Android");
 #elif UNITY_IOS
         Device = "iOS";
-　      Debug.Log("iOS");
+        Debug.Log("iOS");
 #else
         Device = "PC";
-　      Debug.Log("Other");
+        Debug.Log("Other");
 #endif
     }
 
@@ -53,7 +53,7 @@ public class playerManager : SimulationBehaviour, IPlayerJoined,INetworkRunnerCa
     private void Update()
     {
     }
-   
+
     public void MakePrefab(bool NPC, GameObject NPCPlayer)
     {
         GameObject player;
@@ -94,18 +94,18 @@ public class playerManager : SimulationBehaviour, IPlayerJoined,INetworkRunnerCa
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         waitingmanager = FindObjectOfType<WaitingManager>();
         if (waitingmanager == null) return;
-        waitingmanager.ConfirmPlayerNum(PlayerNum,id);
+        waitingmanager.ConfirmPlayerNum(PlayerNum, id);
     }
-    public  void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         PlayerNum = player.PlayerId + 1;
-        print("hello :" +player.PlayerId);
+        print("hello :" + player.PlayerId);
         PlayerNumberCheck();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        print("Bye :" +player.PlayerId);
+        print("Bye :" + player.PlayerId);
         PlayerNum--;
         PlayerNumberCheck();
 

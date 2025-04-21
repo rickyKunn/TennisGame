@@ -1,7 +1,14 @@
 fileFormatVersion: 2
-guid: e2dd5d3c72e7442b0b0d4b554dee7cd0
+guid: b8d6a29d27c1345e49456811e120e0d2
 DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173817
+  packageName: Core Haptics Plugin for iOS 13+
+  packageVersion: 1.0
+  assetPath: Assets/UnityCoreHaptics/Example/Haptic Demo.unity
+  uploadId: 376365

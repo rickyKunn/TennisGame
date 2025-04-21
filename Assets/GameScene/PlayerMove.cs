@@ -45,26 +45,6 @@ public class PlayerMove : NetworkBehaviour
 
 
 
-    //----------JoyCon--------------------------------------
-    private static readonly Joycon.Button[] m_buttons =
-        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
-
-    private List<Joycon> m_joycons;
-    private Joycon m_joyconL;
-    private Joycon m_joyconR;
-    private Joycon.Button? m_pressedButtonL;
-    private Joycon.Button? m_pressedButtonR;
-
-    private void SetControllers()
-    {
-        m_joycons = JoyconManager.Instance.j;
-        if (m_joycons == null || m_joycons.Count <= 0) return;
-        m_joyconL = m_joycons.Find(c => c.isLeft);
-        m_joyconR = m_joycons.Find(c => !c.isLeft);
-    }
-    //-----------------------------------------------------
-
-
 
 
     private void Awake()
@@ -82,9 +62,8 @@ public class PlayerMove : NetworkBehaviour
         HP = playerdataScript.status.hitPoint;
         particleObject.Stop();
         servicemanager = GameObject.Find("service").GetComponent<ServiceManager>();
-        SetControllers();
         device = playermanager.Device;
-        if(device != "PC") MovingJoyStick = GameObject.Find("MoveJoystick").GetComponent<FloatingJoystick>();
+        if (device != "PC") MovingJoyStick = GameObject.Find("MoveJoystick").GetComponent<FloatingJoystick>();
         chatmanager = FindObjectOfType<ChatManager>();
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
@@ -94,20 +73,20 @@ public class PlayerMove : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority) return;
-      
+
         if (IsAnimation)
         {
             rBody.velocity = Vector3.zero;
             return;
         }
         //if (chatmanager.isChating) return;
-        float x= 0, z = 0;
-        if(device == "PC")
+        float x = 0, z = 0;
+        if (device == "PC")
         {
-           x = Input.GetAxisRaw("Horizontal");
-           z = Input.GetAxisRaw("Vertical");
+            x = Input.GetAxisRaw("Horizontal");
+            z = Input.GetAxisRaw("Vertical");
         }
-        else if(device != "")
+        else if (device != "")
         {
             x = MovingJoyStick.Horizontal;
             z = MovingJoyStick.Vertical;
@@ -118,7 +97,7 @@ public class PlayerMove : NetworkBehaviour
         movingDirection = q * movingDirection;
         movingDirection.Normalize();//斜めの距離が長くなるのを防ぐ
 
-        if(HP <= 0)
+        if (HP <= 0)
         {
             movingVelocity = movingDirection * (speed * 0.5f);
 
@@ -178,12 +157,12 @@ public class PlayerMove : NetworkBehaviour
         {
             movingVelocity.z = 0;
 
-            if(servePosKind == 1)
+            if (servePosKind == 1)
             {
                 nowPos.x = Mathf.Clamp(nowPos.x, 0, 40);
 
             }
-            else if(servePosKind == 2)
+            else if (servePosKind == 2)
             {
                 nowPos.x = Mathf.Clamp(nowPos.x, -40, 0);
 
@@ -219,17 +198,17 @@ public class PlayerMove : NetworkBehaviour
 
         if (!HasStateAuthority) return;
 
-            move();
-            if(lerped == false)
-            {
-                this.transform.position = Vector3.Lerp(this.transform.position, lerp_vec, 10 * Time.deltaTime); // 目的の位置に移動
-                if (lerp_vec.x == transform.position.x && lerp_vec.z == transform.position.z) lerped = true;
-                this.transform.rotation = hittingRotate;
-            }
-        
+        move();
+        if (lerped == false)
+        {
+            this.transform.position = Vector3.Lerp(this.transform.position, lerp_vec, 10 * Time.deltaTime); // 目的の位置に移動
+            if (lerp_vec.x == transform.position.x && lerp_vec.z == transform.position.z) lerped = true;
+            this.transform.rotation = hittingRotate;
+        }
+
     }
 
-    public async void Player_Move_to_Ball(Vector3 lerp_pos,Quaternion rotate, bool lerping)
+    public async void Player_Move_to_Ball(Vector3 lerp_pos, Quaternion rotate, bool lerping)
     {
         lerped = false;
         lerp_vec = lerp_pos;
@@ -258,7 +237,7 @@ public class PlayerMove : NetworkBehaviour
     private int servePosKind;
     public void TossWait(int posKind)
     {
-        if(servicemanager.ServerId == id)
+        if (servicemanager.ServerId == id)
         {
             servePosKind = posKind;
 
@@ -276,7 +255,7 @@ public class PlayerMove : NetworkBehaviour
     public void thisDespawn()
     {
         ball = GameObject.Find("Ball");
-        if(ball == true)
+        if (ball == true)
         {
             ball.GetComponent<BallMove>().Destroy();
         }
@@ -328,13 +307,13 @@ public class PlayerMove : NetworkBehaviour
     /// </summary>
     /// <param name="kind">大まかな分類</param>
     /// <param name="BallKind">細かい分類(カットかドライブかなど)</param>
-    public void StartAnimation(int kind,int BallKind)
+    public void StartAnimation(int kind, int BallKind)
     {
         float time = 0;
         IsAnimation = true;
         if (kind == 1)
         {
-            if(BallKind == 2)
+            if (BallKind == 2)
             {
                 playerAnimator.SetTrigger("ForeLob");
 
@@ -348,14 +327,14 @@ public class PlayerMove : NetworkBehaviour
             AnimationKind = kind;
 
         }
-        else if(kind == -1)
+        else if (kind == -1)
         {
             if (BallKind == 2)
             {
                 playerAnimator.SetTrigger("BackLob");
 
             }
-            else if(BallKind == 3)
+            else if (BallKind == 3)
             {
                 playerAnimator.SetTrigger("BackCut");
             }
@@ -373,31 +352,31 @@ public class PlayerMove : NetworkBehaviour
             IsAnimation = false;
             tossWait = true;
             playerAnimator.SetTrigger("TossWait");
-            time = 0.1f;            
+            time = 0.1f;
         }
         if (kind == 3)
         {
             tossWait = false;
             playerAnimator.SetTrigger("Toss");
             time = 0.2f;
-            
+
         }
         if (kind == 4)
         {
             playerAnimator.SetTrigger("Serve");
             time = 0.4f;
             AnimationKind = 4;
-            Invoke("EndAnimation",0.4f);
+            Invoke("EndAnimation", 0.4f);
 
         }
-        if(kind == 0)
+        if (kind == 0)
         {
             playerAnimator.SetTrigger("Smash");
             time = 1;
             Invoke("EndAnimation", time);
             AnimationKind = kind;
         }
-        if(kind == -10)
+        if (kind == -10)
         {
             IsAnimation = false;
             playerAnimator.SetTrigger("TossExit");
@@ -409,7 +388,7 @@ public class PlayerMove : NetworkBehaviour
         {
             IsAnimation = false;
         }
-        else if(AnimationKind == -1)
+        else if (AnimationKind == -1)
         {
             IsAnimation = false;
 
@@ -428,7 +407,7 @@ public class PlayerMove : NetworkBehaviour
             IsAnimation = false;
 
         }
-        if(AnimationKind == 0)
+        if (AnimationKind == 0)
         {
             IsAnimation = false;
         }

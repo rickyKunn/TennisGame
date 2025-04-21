@@ -1,2 +1,18 @@
 fileFormatVersion: 2
-guid: 4916a4da5596e460b875c8e97ef59d28
+guid: 996211f7a2611419eaa00b0d99000283
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173817
+  packageName: Core Haptics Plugin for iOS 13+
+  packageVersion: 1.0
+  assetPath: Assets/UnityCoreHaptics/Example/Scripts/AnimatingCube.cs
+  uploadId: 376365
