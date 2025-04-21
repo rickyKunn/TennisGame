@@ -1,113 +1,111 @@
+
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Fusion;
 using TMPro;
-using System.Linq;
-
-
 
 public class NetworkDatas : NetworkBehaviour
 {
-
+    // ───────────────────────────────────────────────
+    //  フィールド
+    // ───────────────────────────────────────────────
     private int id;
+
+    // ───────────────────────────────────────────────
+    //  Networked プロパティ
+    // ───────────────────────────────────────────────
     [HideInInspector]
-    [Networked(OnChanged = nameof(ChangeWaitingSceneName))]
+    [Networked, OnChangedRender(nameof(ChangeWaitingSceneName))]
     public NetworkString<_16> NickName { get; private set; }
+
     [HideInInspector]
-    [Networked(OnChanged = nameof(ChangeName))]
+    [Networked, OnChangedRender(nameof(ChangeName))]
     public NetworkString<_16> NickName1 { get; private set; }
+
     [HideInInspector]
-    [Networked(OnChanged = nameof(ChangeName))]
+    [Networked, OnChangedRender(nameof(ChangeName))]
     public NetworkString<_16> NickName2 { get; private set; }
+
     [HideInInspector]
-    [Networked(OnChanged = nameof(RecievePlaying))]
+    [Networked, OnChangedRender(nameof(RecievePlaying))]
     public NetworkBool playButton { get; set; }
-    [Networked(OnChanged = nameof(RecievePictureId))]
+
+    [Networked, OnChangedRender(nameof(RecievePictureId))]
     public int pictureId { get; private set; }
 
-    private TextMeshProUGUI MyNameText;
+    // ───────────────────────────────────────────────
+    //  ローカル参照
+    // ───────────────────────────────────────────────
+    private TextMeshProUGUI myNameText;
+
     private void Start()
     {
         id = FindObjectOfType<playerManager>().id;
-        GameObject MyNameTextObj = GameObject.Find("MyName");
-        if(MyNameTextObj != null) MyNameText = MyNameTextObj.GetComponent<TextMeshProUGUI>();
 
+        if (GameObject.Find("MyName") is { } myNameObj)
+            myNameText = myNameObj.GetComponent<TextMeshProUGUI>();
     }
-    public void IdChanged(int CameId)
+
+    // ───────────────────────────────────────────────
+    //  Public API
+    // ───────────────────────────────────────────────
+    public void IdChanged(int cameId)
     {
         id = FindObjectOfType<playerManager>().id;
-        if (CameId != id) return;
-        var nickName = FindObjectOfType<PlayerData>().GetNickName();
+        if (cameId != id) return;
 
-        MyNameText.text = nickName; //自分の名前の欄に代入
+        var nick = FindObjectOfType<PlayerData>().GetNickName();
+        myNameText.text = nick;
 
-        if (id == 1)
+        if (id == 1) NickName1 = nick;
+        else if (id == 2) NickName2 = nick;
+
+        NickName = nick;
+    }
+
+    public void CanPlay() => playButton = true;
+    public void ChangePicureId(int pid) => pictureId = pid;   // 0 にならないよう保証
+    public void NPCMode() => NickName2 = "AIくん";
+
+    public override void FixedUpdateNetwork() { /* 何もしない */ }
+
+    // ───────────────────────────────────────────────
+    //  OnChanged コールバック
+    // ───────────────────────────────────────────────
+
+    public void ChangeName()
+    {
+        var playerData = FindObjectOfType<PlayerData>();
+
+        if (!string.IsNullOrEmpty(NickName1.ToString()))
+            playerData.name1 = NickName1.ToString();
+
+        if (!string.IsNullOrEmpty(NickName2.ToString()))
+            playerData.name2 = NickName2.ToString();
+    }
+
+    public void ChangeWaitingSceneName()
+    {
+        string name = NickName.ToString();
+
+        if (!HasStateAuthority && !string.IsNullOrEmpty(name))
         {
-            NickName1 = nickName;
-        }
-        else if (id == 2)
-        {
-            NickName2 = nickName;
-
-        }
-
-        NickName = nickName;
-    }
-
-    public void CanPlay()
-    {
-        playButton = true;
-    }
-
-    public void ChangePicureId(int _pictureId)
-    {
-        pictureId = _pictureId; //値が0のままにならないようにするため。
-    }
-
-    public override void FixedUpdateNetwork()
-    {
-    }
-
-    public static void ChangeName(Changed<NetworkDatas> playerInfo)
-    {
-        
-        var playerdata = FindObjectOfType<PlayerData>();
-        if (playerInfo.Behaviour.NickName1.ToString() != "") playerdata.name1 = playerInfo.Behaviour.NickName1.ToString();
-        if (playerInfo.Behaviour.NickName2.ToString() != "") playerdata.name2 = playerInfo.Behaviour.NickName2.ToString();
-    }
-    public static void ChangeWaitingSceneName(Changed<NetworkDatas> playerInfo)
-    {
-        string name = playerInfo.Behaviour.NickName.ToString();
-        if (!playerInfo.Behaviour.HasStateAuthority && name != "")
-        {
-            GameObject otherNameObject = GameObject.Find("OtherName");
-            if (otherNameObject)
-            {
-                var otherNameText = otherNameObject.GetComponent<TextMeshProUGUI>();
-                otherNameText.text = name;
-            }
+            if (GameObject.Find("OtherName") is { } otherObj)
+                otherObj.GetComponent<TextMeshProUGUI>().text = name;
         }
     }
-    public static void RecievePlaying(Changed<NetworkDatas> playerInfo)
+
+    public void RecievePlaying()
     {
-        if(!playerInfo.Behaviour.HasStateAuthority && playerInfo.Behaviour.playButton == true) //他の人がスタートボタンを押したら呼び出される。
-        {
+        if (!HasStateAuthority && playButton)
             FindAnyObjectByType<WaitingManager>().checkedNum++;
-        }
     }
-    public static void RecievePictureId(Changed<NetworkDatas> playerInfo)
-    {
 
-        if (!playerInfo.Behaviour.HasStateAuthority) //let's start の時。
-        {
-            OtherPicture newScript = FindObjectOfType<OtherPicture>();
-            if(newScript != null) newScript.ChangeOtherPicture(playerInfo.Behaviour.pictureId - 1); //インクリメントした分デクリメント
-            //GameObject.Find("OtherSelectedCharacter").GetComponent<>
-        }
-    }
-    public void NPCMode()
+    public void RecievePictureId()
     {
-        NickName2 = "AIくん";
+        if (!HasStateAuthority)
+            FindObjectOfType<OtherPicture>()?.ChangeOtherPicture(pictureId - 1); // インクリメント分デクリメント
     }
 }

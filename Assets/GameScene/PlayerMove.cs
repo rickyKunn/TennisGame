@@ -76,7 +76,7 @@ public class PlayerMove : NetworkBehaviour
 
         if (IsAnimation)
         {
-            rBody.velocity = Vector3.zero;
+            rBody.linearVelocity = Vector3.zero;
             return;
         }
         //if (chatmanager.isChating) return;
@@ -184,7 +184,7 @@ public class PlayerMove : NetworkBehaviour
 
         transform.position = nowPos;
 
-        rBody.velocity = new Vector3(movingVelocity.x, rBody.velocity.y, movingVelocity.z);
+        rBody.linearVelocity = new Vector3(movingVelocity.x, rBody.linearVelocity.y, movingVelocity.z);
 
         if (movingVelocity != Vector3.zero)
         {
@@ -247,7 +247,7 @@ public class PlayerMove : NetworkBehaviour
 
     void move()
     {
-        speed_an = rBody.velocity.magnitude;
+        speed_an = rBody.linearVelocity.magnitude;
         playerAnimator.SetFloat("Speed", speed_an);
 
     }

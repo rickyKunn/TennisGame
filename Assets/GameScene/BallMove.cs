@@ -604,7 +604,7 @@ public class BallMove : NetworkBehaviour
             float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
             if (serve_distance < 2)
             {
-                rBody.velocity = Vector3.zero;
+                rBody.linearVelocity = Vector3.zero;
                 ServeStorngHit = true;
                 serveLength = 40;
                 servePower = playerAbility.driveServePower;
@@ -612,7 +612,7 @@ public class BallMove : NetworkBehaviour
             }
             else if (serve_distance < 15)
             {
-                rBody.velocity = Vector3.zero;
+                rBody.linearVelocity = Vector3.zero;
                 serveLength = 40;
                 servePower = playerAbility.driveServePower + 0.3f;
                 SoundKind = 1;
@@ -707,7 +707,7 @@ public class BallMove : NetworkBehaviour
             float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
             if (serve_distance < 2)
             {
-                rBody.velocity = Vector3.zero;
+                rBody.linearVelocity = Vector3.zero;
                 ServeStorngHit = true;
                 serveLength = 40;
                 servePower = playerAbility.driveServePower;
@@ -715,7 +715,7 @@ public class BallMove : NetworkBehaviour
             }
             else if (serve_distance < 15)
             {
-                rBody.velocity = Vector3.zero;
+                rBody.linearVelocity = Vector3.zero;
                 serveLength = 40;
                 servePower = playerAbility.driveServePower + 0.3f;
                 SoundKind = 1;
@@ -841,7 +841,7 @@ public class BallMove : NetworkBehaviour
     private void HittingPlayer_change()
     {
 
-        Vector3 velo = rBody.velocity;
+        Vector3 velo = rBody.linearVelocity;
 
         if (velo.z > 1 && vel_turned == true)
         {
@@ -1059,7 +1059,7 @@ public class BallMove : NetworkBehaviour
     private void Rpc_toss_addForce(Vector3 Force, Vector3 position)
     {
         Physics.gravity = new Vector3(0, -50, 0);
-        rBody.velocity = Vector3.zero;
+        rBody.linearVelocity = Vector3.zero;
         this.transform.position = position;
         rBody.AddForce(Force, ForceMode.Impulse);
     }
@@ -1067,7 +1067,7 @@ public class BallMove : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void Rpc_service_AddForce(Vector3 serve_Force, int SoundKind)
     {
-        rBody.velocity = Vector3.zero;
+        rBody.linearVelocity = Vector3.zero;
         rBody.AddForce(serve_Force, ForceMode.Impulse);
         if (SoundKind == 1) audioSource.PlayOneShot(hit1); //打球音
         else if (SoundKind == 2) audioSource.PlayOneShot(hit2);  //強打球音
@@ -2076,7 +2076,7 @@ public class BallMove : NetworkBehaviour
         {
             Rpc_Set_Slice(0, false);
         }
-        rBody.velocity = Vector3.zero;
+        rBody.linearVelocity = Vector3.zero;
         this.transform.position = position;
         rBody.AddForce(Force, ForceMode.Impulse);
         if (SoundKind == 1) audioSource.PlayOneShot(hit1); //打球音

@@ -24,7 +24,7 @@ public class NPCPlayerMove : NetworkBehaviour
     private Rigidbody rBody;
     private bool lerped;
     private Vector3 lerp_vec;
-    private float speed,range;
+    private float speed, range;
     public float HP;
     private Vector3 digrees;
     Camera cam;
@@ -57,24 +57,7 @@ public class NPCPlayerMove : NetworkBehaviour
 
     private GameObject obj;
     public GameObject predictObj;
-    //----------JoyCon--------------------------------------
-    private static readonly Joycon.Button[] m_buttons =
-        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
 
-    private List<Joycon> m_joycons;
-    private Joycon m_joyconL;
-    private Joycon m_joyconR;
-    private Joycon.Button? m_pressedButtonL;
-    private Joycon.Button? m_pressedButtonR;
-
-    private void SetControllers()
-    {
-        m_joycons = JoyconManager.Instance.j;
-        if (m_joycons == null || m_joycons.Count <= 0) return;
-        m_joyconL = m_joycons.Find(c => c.isLeft);
-        m_joyconR = m_joycons.Find(c => !c.isLeft);
-    }
-    //-----------------------------------------------------
 
 
     public enum NPCMovingPhase
@@ -113,10 +96,9 @@ public class NPCPlayerMove : NetworkBehaviour
         HP = playerdataScript.NPCStatus.hitPoint;
         servicemanager = GameObject.Find("service").GetComponent<ServiceManager>();
         serverId = servicemanager.ServerId;
-        SetControllers();
         device = playermanager.Device;
         if (device != "PC") MovingJoyStick = GameObject.Find("MoveJoystick").GetComponent<FloatingJoystick>();
-        if(serverId == 2)
+        if (serverId == 2)
         {
             BattlePhaseChange(BattlePhase.NPCService);
         }
@@ -127,7 +109,7 @@ public class NPCPlayerMove : NetworkBehaviour
     {
         if (IsAnimation || NPCMoving == NPCMovingPhase.Waiting)
         {
-            rBody.velocity = Vector3.zero;
+            rBody.linearVelocity = Vector3.zero;
             return;
         }
         float x = 0, z = 0;
@@ -189,13 +171,13 @@ public class NPCPlayerMove : NetworkBehaviour
         nowPos.x = Mathf.Clamp(nowPos.x, -95, 95);
 
         transform.position = nowPos;
-        rBody.velocity = new Vector3(movingVelocity.x, rBody.velocity.y, movingVelocity.z);
+        rBody.linearVelocity = new Vector3(movingVelocity.x, rBody.linearVelocity.y, movingVelocity.z);
 
         if (movingVelocity != Vector3.zero)
         {
             gameObject.transform.forward = movingVelocity;
         }
-        if(Vector3.Distance(this.transform.position, destination) < 4)
+        if (Vector3.Distance(this.transform.position, destination) < 4)
         {
             NPCMoving = NPCMovingPhase.Waiting;
             waitHitting = true;
@@ -203,7 +185,7 @@ public class NPCPlayerMove : NetworkBehaviour
     }
     private void NPCMove()
     {
-        if(NPCMoving == NPCMovingPhase.Chasing)
+        if (NPCMoving == NPCMovingPhase.Chasing)
         {
 
         }
@@ -215,12 +197,12 @@ public class NPCPlayerMove : NetworkBehaviour
     /// <param name="Ballkind"></param>
     /// <param name="HitPoint"></param>
     /// <param name="HitVec"></param>
-    public async void NPCDestination(NPCMovingPhase newPhase, int Ballkind, Vector3 HitPoint, Vector3 HitVec,bool serve)
+    public async void NPCDestination(NPCMovingPhase newPhase, int Ballkind, Vector3 HitPoint, Vector3 HitVec, bool serve)
     {
         NPCMoving = newPhase;
         preDistance = Vector2.Distance(new Vector2(destination.x, destination.z), new Vector2(ball.transform.position.x, ball.transform.position.z)); ;
         Vector3 des = Vector3.zero;
-        if(newPhase == NPCMovingPhase.Waiting)
+        if (newPhase == NPCMovingPhase.Waiting)
         {
             Vector3 posMe = this.transform.position;
             des = this.transform.position;
@@ -230,7 +212,7 @@ public class NPCPlayerMove : NetworkBehaviour
             desVec = new Vector2(destination.x - posMe.x, destination.z - posMe.z);
             NPCMoving = NPCMovingPhase.Backing;
         }
-        if(newPhase == NPCMovingPhase.Chasing)
+        if (newPhase == NPCMovingPhase.Chasing)
         {
 
             //内積によりボールへの最短距離を取得(clampにより内積変数kを制限)尚,ベクトルAB(ボールの方向ベクトル)の大きさを1(Normalize)することにより媒介変数kでの計算を容易化
@@ -240,7 +222,7 @@ public class NPCPlayerMove : NetworkBehaviour
             posBall.y = posMe.y;
             Vector3 posNormal = HitVec;
             posNormal.y = 0;
-            
+
             float k = Vector3.Dot(posMe - posBall, posNormal.normalized);
             k += posBall.z;
             //kの制限範囲は実際の座標をclampに入力
@@ -284,7 +266,7 @@ public class NPCPlayerMove : NetworkBehaviour
                 }
             }
             k -= posBall.z;
-            if(Ballkind != 3) destination = posBall + k * posNormal.normalized;
+            if (Ballkind != 3) destination = posBall + k * posNormal.normalized;
             destination.y = this.transform.position.y;
             desVec = new Vector2(destination.x - posMe.x, destination.z - posMe.z);
             print(desVec);
@@ -301,7 +283,7 @@ public class NPCPlayerMove : NetworkBehaviour
             int animeKind;
             if (ball.transform.position.x > this.transform.position.x) animeKind = -1;
             else animeKind = 1;
-            
+
             float timing_dis = this.transform.position.z - ball.transform.position.z;
             float timing_dis_x = ball.transform.position.x - this.transform.position.x; //0中心
             float timing_dis_sqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_x, 2));  //0中心
@@ -310,12 +292,12 @@ public class NPCPlayerMove : NetworkBehaviour
             bool canHit = ball.GetComponent<BallMove>().TryNPCHit(animeKind, timing_dis_sqrt, rnd);
             if (canHit == true)
             {
-                NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero,false);
+                NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero, false);
                 waitHitting = false;
 
             }
         }
-        if(emergencyHit && preDistance < range * 3)
+        if (emergencyHit && preDistance < range * 3)
         {
             int animeKind;
             if (ball.transform.position.x > this.transform.position.x) animeKind = -1;
@@ -330,7 +312,7 @@ public class NPCPlayerMove : NetworkBehaviour
             bool canHit = ball.GetComponent<BallMove>().TryNPCHit(animeKind, preDistance, rnd);
             if (canHit == true)
             {
-                NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero,false);
+                NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero, false);
                 waitHitting = false;
 
             }
@@ -370,7 +352,7 @@ public class NPCPlayerMove : NetworkBehaviour
 
     private async void ServeFunc()
     {
-        
+
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         ball.GetComponent<BallMove>().NPCWillToss = true;
         await UniTask.WaitUntil(() => ball.transform.position.y >= 20);
@@ -384,7 +366,7 @@ public class NPCPlayerMove : NetworkBehaviour
         lerp_vec = lerp_pos;
         hittingRotate = rotate;
         await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
-        NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero,false);
+        NPCDestination(NPCMovingPhase.Waiting, 1, Vector3.zero, Vector3.zero, false);
         lerped = true;
     }
 
@@ -401,7 +383,7 @@ public class NPCPlayerMove : NetworkBehaviour
             case BattlePhase.NPCService:
                 await UniTask.Delay(TimeSpan.FromSeconds(3));
                 print("a");
-                bool exist =  player.GetComponent<PlayerService>().NPCMakeBall();
+                bool exist = player.GetComponent<PlayerService>().NPCMakeBall();
                 print("fsfsa" + exist);
                 ServeFunc();
                 break;
@@ -426,8 +408,8 @@ public class NPCPlayerMove : NetworkBehaviour
 
     void move()
     {
-        speed_an = rBody.velocity.magnitude;
-        if(playerAnimator) playerAnimator.SetFloat("Speed", speed_an);
+        speed_an = rBody.linearVelocity.magnitude;
+        if (playerAnimator) playerAnimator.SetFloat("Speed", speed_an);
     }
 
     public void thisDespawn()

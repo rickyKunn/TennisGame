@@ -30,7 +30,7 @@ public class BallPredictManager : MonoBehaviour
     public  void ThisAddVel(Vector3 hitPoint, Vector3 hitVel)
     {
         this.transform.position = hitPoint;
-        rBody.velocity = Vector3.zero;
+        rBody.linearVelocity = Vector3.zero;
         rBody.AddForce(hitVel, ForceMode.Impulse);
         simulateTime = 7;
 
@@ -41,7 +41,7 @@ public class BallPredictManager : MonoBehaviour
         if (this.transform.position.z >= 160 || this.transform.position.z <= -160 || this.transform.position.x >= 90 || this.transform.position.x <= -90)
         {
             this.transform.position = Vector3.one;
-            rBody.velocity = Vector3.zero;
+            rBody.linearVelocity = Vector3.zero;
             simulateTime = 0.1f;
         }
         //if (this.transform.position.z >= 70)
