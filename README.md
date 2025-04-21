@@ -13,8 +13,7 @@
 
 ## プレイ画面
 
-![ロビー画面](./docs/lobby.png)  
-![ゲームプレイ](./docs/gameplay.gif)
+-準備中
 
 ---
 
