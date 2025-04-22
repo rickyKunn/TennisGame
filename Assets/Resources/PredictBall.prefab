@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3643283895690479928}
   - component: {fileID: 6445931337674798778}
   - component: {fileID: 1668799934492397861}
-  - component: {fileID: -6412905966235010308}
   m_Layer: 6
   m_Name: PredictBall
   m_TagString: Untagged
@@ -83,19 +82,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-6412905966235010308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90191600373155650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946429da0851e46f5b3633a6225e0511, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reached: 0
 --- !u!1001 &8082920699595245981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161,7 +147,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9f9a0f76f88bd49c2b55f3ee1956feb2, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6133d3167e3e44d05b06db8384aace3d, type: 2}
     - target: {fileID: 919132149155446097, guid: 9f9a0f76f88bd49c2b55f3ee1956feb2, type: 3}

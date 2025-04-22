@@ -95,6 +95,15 @@ MonoBehaviour:
   OnReliableData:
     m_PersistentCalls:
       m_Calls: []
+  OnReliableProgress:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectEnterAOI:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectExitAOI:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1796160379415522447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,11 +113,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3447695360829448412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42ed0ef641dc2414bb9b14ab3c01b745, type: 3}
+  m_Script: {fileID: 11500000, guid: dd3e972501feb43a8b519b19dccb03ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 3723900454335378386, guid: e84d1adb45d084587aadc8e6e1e568f5, type: 3}
+  PlayerPrefab: {fileID: 0}
+  NPCPlayerPrefab: {fileID: 0}
   id: 0
+  PlayerNum: 0
+  canvas: {fileID: 0}
+  Device: 
+  playerManagerNPCMode: 0
+  subSceneMade: 0
+  SubScene:
+    m_Handle: 0
+  PredictScene:
+    m_Handle: 0
 --- !u!114 &5201437852191966756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,5 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a93abf1a391964a94e5c139605105b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowHierarchyWindowOverlay: 1
-  PostLoadDelayFrames: 1
+  IsSceneTakeOverEnabled: 1
+  LogSceneLoadErrors: 1

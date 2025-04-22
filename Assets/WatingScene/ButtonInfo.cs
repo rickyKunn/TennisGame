@@ -37,15 +37,15 @@ public class ButtonInfo : MonoBehaviour
         buttonId = thisButtonId;
         thisImg = thisButtonImg;
     }
-    
+
     public void SendCharacterInfo()
     {
         if (playerList[buttonId] == null) return;
-        if(playermanager != null)
+        if (playermanager != null)
         {
             playerdata = FindObjectOfType<PlayerData>();
             playermanager.PlayerPrefab = playerList[buttonId];
-            SetAbility(buttonId,false);
+            SetAbility(buttonId, false);
             print(chosenCharacterImage);
             var image = chosenCharacterImage.GetComponent<Image>();
             image.enabled = true;
@@ -60,9 +60,9 @@ public class ButtonInfo : MonoBehaviour
         SetAbility(NPCKind, true);
     }
 
-    private void SetAbility(int playerKind,bool NPCMode)
+    private void SetAbility(int playerKind, bool NPCMode)
     {
-        
+
         switch (playerKind)
         {
             case 0:  //アモングアス
