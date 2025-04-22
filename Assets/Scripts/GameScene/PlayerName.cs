@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class PlayerName : NetworkBehaviour
 {
-    // 16 文字まで同期。変化したら OnNickNameChanged() が呼ばれる
-    [Networked, Capacity(16), OnChangedRender(nameof(OnNickNameChanged))]
+    // [Networked(OnChanged = nameof(OnNickNameChanged)), Capacity(16)]
     public string NickName { get; set; }
 
     public override void Spawned()

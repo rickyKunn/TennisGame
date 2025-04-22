@@ -1,7 +1,6 @@
 using Fusion;
 using UnityEngine;
 
-[NetworkBehaviourWeaved(0)]
 public class ServiceManager : NetworkBehaviour
 {
     public int ServerId;
@@ -43,13 +42,5 @@ public class ServiceManager : NetworkBehaviour
                 ServerId = 1;
                 break;
         }
-    }
-
-    public override void CopyBackingFieldsToState(bool P_0)
-    {
-    }
-
-    public override void CopyStateToBackingFields()
-    {
     }
 }

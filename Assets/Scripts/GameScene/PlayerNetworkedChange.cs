@@ -1,135 +1,148 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using static BallMove;
+using System;
 
 public class PlayerNetworkedChange : NetworkBehaviour
 {
+    int count;
+    public enum PlayPhase
+    {
+        Wait,
+        TossWait, //トス待機フェーズ
+        Toss, // トスフェーズ
+        Serve,//サーブフェーズ
+        Raley,//ラリーフェーズ
+        RaleyEnd,// ラリー終了フェーズ
+    }
 
-    //  定数・フィールド
-    // ──────────────────────────────────────────────────────────────
-    private const int STARTING_LIVES = 3;
-    private int count;
-    private int id;
-    private bool gameEndLocal;
+    public enum BallKinds
+    {
+        Nothing,//なし
+        Drive,//ドライブボール
+        Lob, //ロブボール
+        Slice, // スライスボール
+        Drop,//ドロップボール
+        Bad, //ダメボール
 
-    private GameObject ball;
-    private PlayerOverviewPanel overviewPanel;
+    }
 
-    public enum PlayPhase { Wait, TossWait, Toss, Serve, Raley, RaleyEnd }
-    public enum BallKinds { Nothing, Drive, Lob, Slice, Drop, Bad }
-
-
-    [Networked, OnChangedRender(nameof(OnPhaseChanged))]
+    [Networked(OnChanged = nameof(PhaseChanged))]
     public PlayPhase CurrentPhase { get; set; }
 
-    [Networked, OnChangedRender(nameof(OnBallKindChanged))]
+    [Networked(OnChanged = nameof(BallKindChange))]
     public BallKinds CurrentBall { get; set; }
 
-    [Networked, OnChangedRender(nameof(OnHitNumChanged))]
+    [Networked(OnChanged = nameof(HitNumChanged))]
     public int HitNumNetworked { get; set; }
 
-    [Networked, OnChangedRender(nameof(OnMissInfoChanged))]
-    public int MissInfoNetworked { get; set; }
+    [Networked(OnChanged = nameof(MissInfoChanged))]
+    public int MissInfoNetworked { get; set; } //サーバー以外がミスの判定をする時に用いる(数値はHitNumNetworked)
+
+    private const int STARTING_LIVES = 3;
+    private int id;
+    private PlayerOverviewPanel _overviewPanel = null;
+
+    private GameObject Ball;
+
 
     [HideInInspector]
-    [Networked, OnChangedRender(nameof(OnScoreChanged))]
+    [Networked(OnChanged = nameof(OnScoreChanged))]
     public int Score1 { get; private set; }
-
     [HideInInspector]
-    [Networked, OnChangedRender(nameof(OnScoreChanged))]
+    [Networked(OnChanged = nameof(OnScoreChanged))]
     public int Score2 { get; private set; }
 
-    // ──────────────────────────────────────────────────────────────
-    //  Unity / Fusion Lifecycle
-    // ──────────────────────────────────────────────────────────────
+
+    private bool GameEnd_NotNetworked;
     private void Start()
     {
         CurrentPhase = PlayPhase.Wait;
         CurrentBall = BallKinds.Nothing;
         HitNumNetworked = 0;
-        ball = gameObject;
+        Ball = this.gameObject;
     }
-
     public override void Spawned()
     {
+        // Initialized game specific settings
         if (Object.HasStateAuthority)
         {
-            id = FindObjectOfType<PlayerService>().id;
-        }
+            var nickName = FindObjectOfType<PlayerData>().GetNickName();
+            id = GameObject.Find("player").GetComponent<PlayerService>().id;
 
+        }
         Score1 = 0;
         Score2 = 0;
 
-        overviewPanel = FindObjectOfType<PlayerOverviewPanel>();
-        overviewPanel.AddEntry(Object.InputAuthority, this);
+        _overviewPanel = FindObjectOfType<PlayerOverviewPanel>();
+
+        _overviewPanel.AddEntry(Object.InputAuthority, this);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        overviewPanel.RemoveEntry(Object.InputAuthority);
+        _overviewPanel.RemoveEntry(Object.InputAuthority);
     }
 
-
-    private void OnPhaseChanged()
+    public static async void MissInfoChanged(Changed<PlayerNetworkedChange> playerInfo)
     {
-        if (CurrentPhase == PlayPhase.Wait) return;
+        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+        var ballmove = playerInfo.Behaviour.gameObject.GetComponent<BallMove>();
+        if (playerInfo.Behaviour.id != ballmove.server_id) return;
+        int missPointNum = playerInfo.Behaviour.MissInfoNetworked;
+        print("一致前!!");
 
-        var bm = ball ? ball.GetComponent<BallMove>() : null;
-        if (bm != null)
+        int listNum = ballmove.PointInfoList.Count;
+        for (int i = 0; i < listNum; i++)
         {
-            bm.CurrentPhaseInt = (int)CurrentPhase;
-            if (CurrentPhase == PlayPhase.Serve)
-                bm.floar_collision = 0;
-        }
-
-        count++;
-    }
-
-    private void OnBallKindChanged()
-    {
-        if (CurrentBall == BallKinds.Nothing) return;
-
-        var bm = ball ? ball.GetComponent<BallMove>() : null;
-        if (bm != null)
-            bm.CurrentBallKind = (int)CurrentBall;
-    }
-
-    private void OnHitNumChanged()
-    {
-        Debug.Log($"HitNum updated: {HitNumNetworked}");
-    }
-
-    private async void OnMissInfoChanged()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(0.2));
-
-        var bm = ball.GetComponent<BallMove>();
-        if (id != bm.server_id) return;
-
-        int missPointNum = MissInfoNetworked;
-
-        for (int i = 0; i < bm.PointInfoList.Count; i++)
-        {
-            if (bm.PointInfoList[i].hittedNum == missPointNum)
+            //ミスした情報が送信された時の打った回数が一致していたら構造体のrecievedNum(受信回数)をインクリメントする
+            if (ballmove.PointInfoList[i].hittedNum == missPointNum)
             {
-                var info = bm.PointInfoList[i];
-                info.recievedNum++;
-                bm.PointInfoList[i] = info;
-                break;
+                print(ballmove.PointInfoList[i].hittedNum);
+                PointInfo newPointinfo = ballmove.PointInfoList[i];
+                newPointinfo.recievedNum++; //構造体のListが参照型ではないため構造体そのものしか書き換えるとしかできない
+                ballmove.PointInfoList[i] = newPointinfo;
+                print("一致!!");
             }
         }
     }
 
-    private void OnScoreChanged()
+    public static void HitNumChanged(Changed<PlayerNetworkedChange> playerInfo)
     {
-        overviewPanel.UpdateScore(Object.InputAuthority, Score1, Score2);
+        print(playerInfo.Behaviour.HitNumNetworked);
+
     }
 
-    // ──────────────────────────────────────────────────────────────
-    //  RPCs
-    // ──────────────────────────────────────────────────────────────
+    public static void PhaseChanged(Changed<PlayerNetworkedChange> playerInfo)
+    {
+        if (playerInfo.Behaviour.CurrentPhase == PlayPhase.Wait) return;
+        if (playerInfo.Behaviour.Ball != null)
+        {
+            var script = playerInfo.Behaviour.Ball.GetComponent<BallMove>();
+            script.CurrentPhaseInt = ((int)playerInfo.Behaviour.CurrentPhase);
+            if (playerInfo.Behaviour.CurrentPhase == PlayPhase.Serve) script.floar_collision = 0;
+        }
+        playerInfo.Behaviour.count++;
+        //print(playerInfo.Behaviour.CurrentPhase + " :  "+ playerInfo.Behaviour.Ball.GetComponent<BallMove>().CurrentPhaseInt + "  " + playerInfo.Behaviour.count.ToString());
+
+    }
+
+    public static void BallKindChange(Changed<PlayerNetworkedChange> playerInfo)
+    {
+        if (playerInfo.Behaviour.CurrentBall == BallKinds.Nothing) return;
+        if (playerInfo.Behaviour.Ball != null) playerInfo.Behaviour.Ball.GetComponent<BallMove>().CurrentBallKind = ((int)playerInfo.Behaviour.CurrentBall);
+        print(playerInfo.Behaviour.Ball.GetComponent<BallMove>().CurrentBallKind + "  " + playerInfo.Behaviour.count);
+    }
+
+    public void ScoreChange(int sc1, int sc2)
+    {
+
+        Score1 = sc1;
+        Score2 = sc2;
+    }
     [Rpc(RpcSources.Proxies, RpcTargets.All)]
     public void Rpc_HitNumIncrement()
     {
@@ -142,16 +155,16 @@ public class PlayerNetworkedChange : NetworkBehaviour
         MissInfoNetworked = HitNumNetworked;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void Rpc_ChangeCurrentBallKinds(BallKinds kind)
+    public static void OnScoreChanged(Changed<PlayerNetworkedChange> playerInfo)
     {
-        CurrentBall = kind;
+        playerInfo.Behaviour._overviewPanel.UpdateScore(playerInfo.Behaviour.Object.InputAuthority,
+            playerInfo.Behaviour.Score1,
+            playerInfo.Behaviour.Score2);
     }
 
-
-    public void ScoreChange(int sc1, int sc2)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void Rpc_ChangeCurrentBallKinds(BallKinds ballkinds)
     {
-        Score1 = sc1;
-        Score2 = sc2;
+        CurrentBall = ballkinds;
     }
 }

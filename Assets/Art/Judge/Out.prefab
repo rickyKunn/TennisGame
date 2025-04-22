@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5339718906025555259}
-  - component: {fileID: -3721346990566613682}
   - component: {fileID: 7289559974318883347}
   - component: {fileID: 5777027190288268753}
   - component: {fileID: 2636756782770973080}
+  - component: {fileID: 8668793931891948321}
   m_Layer: 5
   m_Name: Out
   m_TagString: Untagged
@@ -39,22 +39,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 5.5, y: 5.5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &-3721346990566613682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6874158650165176230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cd79ae0ab74a4337b33994a7ae731bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Fault: {fileID: 8300000, guid: 2ea16fb2193834a62aa57e708585362a, type: 3}
-  DoubleFault: {fileID: 8300000, guid: a356d0d931ad14e80ad78abf3850c163, type: 3}
-  Out: {fileID: 8300000, guid: 09a17075c70c44b849bf1acd528a8374, type: 3}
-  TwoBounds: {fileID: 8300000, guid: 2a3b630cf918045b0bb76e8eacd74547, type: 3}
 --- !u!82 &7289559974318883347
 AudioSource:
   m_ObjectHideFlags: 0
@@ -66,6 +50,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -189,3 +174,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8668793931891948321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874158650165176230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c45874833824392b063ad492b43f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fault: {fileID: 8300000, guid: 29dbd7a75aeb4465a88daf2f299bd737, type: 3}
+  DoubleFault: {fileID: 8300000, guid: 696acba51dd3c4f208c0065ac99a5865, type: 3}
+  Out: {fileID: 8300000, guid: 44fe2b510a13941ec969884e5b526dc9, type: 3}
+  TwoBounds: {fileID: 8300000, guid: e06f8bd72b6c541abbd978fd8d97ca69, type: 3}
