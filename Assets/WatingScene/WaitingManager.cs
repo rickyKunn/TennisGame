@@ -11,18 +11,15 @@ using System;
 
 public class WaitingManager : NetworkBehaviour
 {
-    
+
     private int playerNum;
     private int maxNum = 1, thisId;
     private int thisroomPlayerNum;
     private bool canPlay;
-    [SerializeField]
-    public TextMeshProUGUI WaitingText = null;
-    [SerializeField]
-    private TextMeshProUGUI StartText = null;
+    [SerializeField] public TextMeshProUGUI WaitingText = null;
+    [SerializeField] private TextMeshProUGUI StartText = null;
     [SerializeField] private NetworkObject NetworkData;
-    [SerializeField]
-    private GameObject NetworkDatas;
+    [SerializeField] private GameObject NetworkDatas;
     public bool characterChosen;
     private bool Ijoined, Invoked;
     private NetworkObject MyNetworkData = null;
@@ -32,8 +29,7 @@ public class WaitingManager : NetworkBehaviour
     public bool willStart;
     public int myPictureId;
 
-    [SerializeField]
-    private TextMeshProUGUI NPCText;
+    [SerializeField] private TextMeshProUGUI NPCText;
     public bool NPC = false;
     private void Start()
     {
@@ -45,12 +41,12 @@ public class WaitingManager : NetworkBehaviour
     {
         if (Ijoined == false) return;
         playerNum = Runner.ActivePlayers.Count();
-        if(playerNum == maxNum && Invoked == false)
+        if (playerNum == maxNum && Invoked == false)
         {
             Invoked = true;
         }
 
-        if(willStart == false && IChecked == true && checkedNum >= playerNum) //押されたボタンの回数が現在のプレイヤー人数以上だった場合
+        if (willStart == false && IChecked == true && checkedNum >= playerNum) //押されたボタンの回数が現在のプレイヤー人数以上だった場合
         {
             willStart = true;
             LoadScene();
@@ -72,7 +68,7 @@ public class WaitingManager : NetworkBehaviour
         StartText.text = "Start the Game!";
     }
 
-    public async void ConfirmPlayerNum(int ThisRoomPlayerNum,int myId)
+    public async void ConfirmPlayerNum(int ThisRoomPlayerNum, int myId)
     {
         thisId = myId;
         thisroomPlayerNum = ThisRoomPlayerNum;
@@ -130,7 +126,7 @@ public class WaitingManager : NetworkBehaviour
         playermanager = GameObject.Find("PlayerManager").GetComponent<playerManager>();
 
         if (playermanager == false) return;
-      
+
         WaitingText.text = "Let's Start!!";
 
         int newNPCID = FindObjectOfType<OtherPicture>().ChangeOtherPictureNPC(NPC);
@@ -140,9 +136,9 @@ public class WaitingManager : NetworkBehaviour
         await UniTask.Delay(TimeSpan.FromSeconds(3));
         SceneManager.LoadScene("GameScene");
         await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
-        playermanager.MakePrefab(NPC,newNPCPlayer);
+        playermanager.MakePrefab(NPC, newNPCPlayer);
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
-        if(this.gameObject != null)
+        if (this.gameObject != null)
         {
             Destroy(this.gameObject);
         }
@@ -154,8 +150,8 @@ public class WaitingManager : NetworkBehaviour
         var networkData = GameObject.Find("networkData");
 
         networkData.GetComponent<NetworkDatas>().ChangePicureId(myPictureId + 1);
-        
-        
+
+
     }
 
 }
