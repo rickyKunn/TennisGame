@@ -8,8 +8,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 public class playerManager : SimulationBehaviour, IPlayerJoined, INetworkRunnerCallbacks
 {
-
+    [HideInInspector]
     public GameObject PlayerPrefab;
+    [HideInInspector]
     public GameObject NPCPlayerPrefab;
     public int id;
     public int PlayerNum;
