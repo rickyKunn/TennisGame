@@ -779,8 +779,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80a17819499c4b7e8e8c7a65316ed84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonImages: []
-  characterButton: {fileID: 0}
+  ButtonImages:
+  - {fileID: 21300000, guid: 4cc25e84a5a84412fb956e280249131b, type: 3}
+  - {fileID: 21300000, guid: c29671b1c7a6746aa97a177c21f5c15a, type: 3}
+  - {fileID: 21300000, guid: e338673b61a5744d79e3e551160ecb04, type: 3}
+  - {fileID: 21300000, guid: 7331599f8c3f446eb867ea6059c26d8d, type: 3}
+  characterButton: {fileID: 9086507364877387236, guid: f518d812715ae4e3ca88e5e4bed19f0e, type: 3}
 --- !u!114 &702873045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1618,7 +1622,7 @@ Transform:
   m_GameObject: {fileID: 1380125820}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 295.5, y: 406, z: -0.00012207031}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1636,13 +1640,18 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 505042500
   ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
   Flags: 264705
+  NetworkGuid:
+    RawGuidValue: 6ba83b8bd8c84c5892b7b3a51da1c437
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1380125823}
-  ForceRemoteRenderTimeframe: 0
+  SimulationBehaviours: []
 --- !u!114 &1380125823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,10 +1664,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98201f775114d407c8485cb0ba294181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 0
   WaitingText: {fileID: 398820718}
   StartText: {fileID: 68199328}
   NetworkData: {fileID: 0}
-  NetworkDatas: {fileID: 0}
+  NetworkDatas: {fileID: 4643134777952517686, guid: d1cd54536dcd744d49739eb6ed65074e, type: 3}
   characterChosen: 0
   checkedNum: 0
   willStart: 0
