@@ -145,4 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af5f0d9ed21d46dabc950931840b201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerList: []
+  playerList:
+  - {fileID: 7629164272585486877, guid: 1b3374b7f10344455b0efa0a31a483a6, type: 3}
+  - {fileID: 1617895100808717186, guid: 19156e85a1cab4c32b0a5d8368196b36, type: 3}
+  - {fileID: 9108043110999957441, guid: d5cd70e67e2bd49b986cf69f7573de75, type: 3}
+  - {fileID: 5836248074027050110, guid: e87b7259278054bedb9dd23abfb62ce7, type: 3}

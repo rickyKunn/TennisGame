@@ -9,7 +9,7 @@ public class JudgeDevice : MonoBehaviour
         playermanager = Object.FindObjectOfType<playerManager>();
         if (playermanager.Device == "PC")
         {
-            base.gameObject.SetActive(value: false);
+            gameObject.SetActive(false);
         }
     }
 }

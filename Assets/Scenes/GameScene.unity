@@ -994,13 +994,11 @@ MonoBehaviour:
   AutoStartAs: 2
   AutoHideGUI: 1
   AutoClients: 1
-  ClientStartDelay: 0.1
   ServerPort: 27015
   DefaultRoomName: 
+  AlwaysShowStats: 0
   InitialScenePath: 
   _currentStage: 0
-  AutoConnectVirtualInstances: 1
-  VirtualInstanceConnectDelay: 1
 --- !u!4 &354453820
 Transform:
   m_ObjectHideFlags: 0
@@ -1028,8 +1026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a93abf1a391964a94e5c139605105b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsSceneTakeOverEnabled: 1
-  LogSceneLoadErrors: 1
+  ShowHierarchyWindowOverlay: 1
+  PostLoadDelayFrames: 1
 --- !u!1 &364939016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1503,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 637606668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b61440cabaa9460d9edac89e3366558, type: 3}
+  m_Script: {fileID: 11500000, guid: b02f9bf77cc864a2fad1c301fab17c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &705507993
@@ -1843,13 +1841,18 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3269293208
   ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
   Flags: 264705
+  NetworkGuid:
+    RawGuidValue: 7d5fc06ea6014eaf804ca8303e2f7799
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 951758575}
-  ForceRemoteRenderTimeframe: 0
+  SimulationBehaviours: []
 --- !u!114 &951758575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1862,6 +1865,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8803dccd3204056b426d972a2e98d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 0
   ServerId: 0
   ManagerObject: {fileID: 0}
   id: 0
@@ -2802,7 +2808,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1675570102}
   - component: {fileID: 1675570101}
-  - component: {fileID: 1675570103}
   m_Layer: 0
   m_Name: judger
   m_TagString: Untagged
@@ -2846,18 +2851,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1675570103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675570100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 694ac46c5b75f4e0fa48e244e62d6f50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1724514782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2918,7 +2911,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1724514782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e01c707ed2a4248ac3efb2aa5b90ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 694ac46c5b75f4e0fa48e244e62d6f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1850354520
@@ -2951,6 +2944,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c0d2be45b314a5682ef397dd9ba03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 0
 --- !u!114 &1850354522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2963,13 +2959,18 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3722246671
   ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
   Flags: 264705
+  NetworkGuid:
+    RawGuidValue: f262db80f2ff420195d90297eeb76185
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1850354521}
-  ForceRemoteRenderTimeframe: 0
+  SimulationBehaviours: []
 --- !u!4 &1850354523
 Transform:
   m_ObjectHideFlags: 0
@@ -3154,7 +3155,6 @@ GameObject:
   - component: {fileID: 1925299573}
   - component: {fileID: 1925299572}
   - component: {fileID: 1925299575}
-  - component: {fileID: 1925299576}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3252,66 +3252,6 @@ MonoBehaviour:
   Components:
   - {fileID: 1925299572}
   _guid: 5704313a-8b75-4d48-
---- !u!114 &1925299576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925299571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 1925299574}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 0
-  antialiasingMode: 0
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 0
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
 --- !u!1 &1949964996
 GameObject:
   m_ObjectHideFlags: 0

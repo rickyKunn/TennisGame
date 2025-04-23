@@ -8,7 +8,6 @@ using Cysharp.Threading.Tasks;
 public class PlayerMove : NetworkBehaviour
 {
     [SerializeField] private Vector3 localGravity;
-    [SerializeField] ParticleSystem particleObject;
     [SerializeField] private GameObject HitArea;
 
     private GameObject ball;
@@ -60,7 +59,6 @@ public class PlayerMove : NetworkBehaviour
         playerdata = playerdataScript.gameObject;
         speed = playerdataScript.status.speed;
         HP = playerdataScript.status.hitPoint;
-        particleObject.Stop();
         servicemanager = GameObject.Find("service").GetComponent<ServiceManager>();
         device = playermanager.Device;
         if (device != "PC") MovingJoyStick = GameObject.Find("MoveJoystick").GetComponent<FloatingJoystick>();

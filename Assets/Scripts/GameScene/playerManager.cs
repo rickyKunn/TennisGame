@@ -8,9 +8,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 public class playerManager : SimulationBehaviour, IPlayerJoined, INetworkRunnerCallbacks
 {
-    [HideInInspector]
+    // [HideInInspector]
     public GameObject PlayerPrefab;
-    [HideInInspector]
+    // [HideInInspector]
     public GameObject NPCPlayerPrefab;
     public int id;
     public int PlayerNum;
@@ -61,6 +61,7 @@ public class playerManager : SimulationBehaviour, IPlayerJoined, INetworkRunnerC
         if (id == 1)
         {
             var newPlayer = Runner.Spawn(PlayerPrefab, new Vector3(20, 1, -95), Quaternion.Euler(0, 0, 0), Player);
+            print("player:" + PlayerPrefab);
             newPlayer.name = "player";
             newPlayer.GetComponent<PlayerMove>().id = id;
             player = newPlayer.gameObject;

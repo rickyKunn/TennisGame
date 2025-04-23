@@ -13,7 +13,7 @@ public class WaitingManager : NetworkBehaviour
 {
 
     private int playerNum;
-    private int maxNum = 1, thisId;
+    private int maxNum = 2, thisId;
     private int thisroomPlayerNum;
     private bool canPlay;
     [SerializeField] public TextMeshProUGUI WaitingText = null;
@@ -74,19 +74,24 @@ public class WaitingManager : NetworkBehaviour
         thisroomPlayerNum = ThisRoomPlayerNum;
         if (maxNum <= ThisRoomPlayerNum)
         {
-            WaitingText.text = $"プレイヤー人数:{ThisRoomPlayerNum}";
+            NPC = false;
+            NPCText.text = "Online\nMODE";
             canPlay = true;
-            if (ThisRoomPlayerNum == 1) NPC = true;
-            else NPC = false;
+            WaitingText.text = $"プレイヤー人数:{ThisRoomPlayerNum}";
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
             MyNetworkData.GetComponent<NetworkDatas>().IdChanged(thisId); //プレイヤー人数が更新されたら0.5sec待ってからキャラクターの名前を更新
         }
         else
         {
+            if (NPC)
+            {
+                canPlay = true;
+            }
             WaitingText.text = $"{ThisRoomPlayerNum}Players..";
             canPlay = false;
-
         }
+
+
     }
     private playerManager playermanager;
     public void StartButtonPressed() //startButtonが押された時にお呼び出される
@@ -106,17 +111,10 @@ public class WaitingManager : NetworkBehaviour
 
     public void NPCButtonPressed()
     {
+
         if (hasClicked) return;
-        if (NPC)
-        {
-            NPCText.text = "NO";
-            NPC = false;
-        }
-        else
-        {
-            NPCText.text = "YES";
-            NPC = true;
-        }
+        NPC = !NPC;
+        NPCText.text = NPC ? "NPC\nMODE" : "Online\nMODE";
     }
 
 

@@ -43,10 +43,10 @@ public class ButtonInfo : MonoBehaviour
         if (playerList[buttonId] == null) return;
         if (playermanager != null)
         {
+            print("playerPrefab:" + playermanager.PlayerPrefab);
             playerdata = FindObjectOfType<PlayerData>();
             playermanager.PlayerPrefab = playerList[buttonId];
             SetAbility(buttonId, false);
-            print(chosenCharacterImage);
             var image = chosenCharacterImage.GetComponent<Image>();
             image.enabled = true;
             image.sprite = thisImg;
@@ -107,7 +107,7 @@ public class ButtonInfo : MonoBehaviour
                     1.2f,//slicePower 1.6
                     0.7f,//driveServePower
                     1.0f,//sliceServePower
-                    25,//sliceServeStrength
+                    2,//sliceServeStrength
                     25,//sliceStrokeStrength15
                     1f,//hitPose
                     1300,

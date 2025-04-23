@@ -23,7 +23,7 @@ public class ServiceManager : NetworkBehaviour
     {
         while (!playermanager)
         {
-            playermanager = UnityEngine.Object.FindObjectOfType<playerManager>();
+            playermanager = FindObjectOfType<playerManager>();
         }
         serve_changed = false;
         ServerId = 1;

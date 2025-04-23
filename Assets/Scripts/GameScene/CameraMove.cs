@@ -23,8 +23,8 @@ public class CameraMove : NetworkBehaviour
     {
         playerManager playermanager = FindObjectOfType<playerManager>();
         device = playermanager.Device;
-        if(device != "PC") directionJoystick = GameObject.Find("DirectionJoystick").GetComponent<FloatingJoystick>();
-        FirstPos = this.transform.position + Vector3.up * 23 - cam.transform.forward * 45;
+        if (device != "PC") directionJoystick = GameObject.Find("DirectionJoystick").GetComponent<FloatingJoystick>();
+        FirstPos = transform.position + Vector3.up * 23 - cam.transform.forward * 45;
         firstAwait = true;
     }
     public override void Spawned()
@@ -42,12 +42,12 @@ public class CameraMove : NetworkBehaviour
             {
                 cam.transform.position = Vector3.Lerp(cam.transform.position, FirstPos, 2 * Time.deltaTime); // 目的の位置に移動
                 float distance = Vector3.Distance(cam.transform.position, FirstPos);
-                if(distance <= 2)
+                if (distance <= 2)
                 {
                     firstMoved = true;
                 }
             }
-            
+
             return;
         }
         if (!HasStateAuthority) return;
@@ -60,7 +60,7 @@ public class CameraMove : NetworkBehaviour
         Vector3 cam_pos = transform.position + Vector3.up * 23 - cam.transform.forward * 45;
         cam.transform.position = Vector3.Lerp(cam.transform.position, cam_pos, 15 * Time.deltaTime); // 目的の位置に移動
 
-        if(device == "PC")
+        if (device == "PC")
         {
             //cam.transform.position = cam_pos;
             float rotateY, rotateX;
@@ -139,7 +139,7 @@ public class CameraMove : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            if(Cursor.visible == false)
+            if (Cursor.visible == false)
             {
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
