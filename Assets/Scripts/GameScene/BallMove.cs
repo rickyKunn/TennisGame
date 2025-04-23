@@ -143,7 +143,7 @@ public class BallMove : NetworkBehaviour
         NPCMode = playermanager.playerManagerNPCMode;
         if (NPCMode)
         {
-            
+
             NPCPlayer = GameObject.Find("NPCPlayer");
             NPM = NPCPlayer.GetComponent<NPCPlayerMove>();
             NPM.ball = this.gameObject;
@@ -333,7 +333,7 @@ public class BallMove : NetworkBehaviour
                     PointInfoList.Clear();
                     ListNum = 0;
                 }
-                if(NPCMode && server_id == 2)
+                if (NPCMode && server_id == 2)
                 {
                     NPM.BattlePhaseChange(BattlePhase.NPCService);
                 }
@@ -354,9 +354,11 @@ public class BallMove : NetworkBehaviour
             {
                 this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
                 playermove.HP = playerAbility.hitPoint;
-                NPM.HP = NPCPlayerAbility.hitPoint;
+                if (NPCMode) NPM.HP = NPCPlayerAbility.hitPoint;
+
                 Rpc_SetGravity(false);
                 BTM.Rpc_ChangeColor(0, false);//Trailを透明に
+                print("PLNWCH:" + PlNwCh);
                 PlNwCh.ScoreChange(scoremanager.p1Score, scoremanager.p2Score);
                 print($"{scoremanager.p1Score} - {scoremanager.p2Score}");
 
@@ -369,7 +371,7 @@ public class BallMove : NetworkBehaviour
                         scoremanager.p1Score = 0;
                         scoremanager.p2Score = 0;
                         Invoke("Destroy", 2);
-                        if(NPCMode) NPM.BattlePhaseChange(BattlePhase.NPCService);
+                        if (NPCMode) NPM.BattlePhaseChange(BattlePhase.NPCService);
                     }
                     else
                     {
@@ -1191,8 +1193,8 @@ public class BallMove : NetworkBehaviour
         {
             targetPosX = -15;
         }
-    
-    desX = targetPosX - ballPosX;
+
+        desX = targetPosX - ballPosX;
 
         float desZ = timing_dis - this.transform.position.z;
 
@@ -1242,7 +1244,7 @@ public class BallMove : NetworkBehaviour
 
     private void Ball_out()
     {
-        if ((server_id == id || NPCMode)&& Play_End == false)
+        if ((server_id == id || NPCMode) && Play_End == false)
         {
             if (this.transform.position.z >= 150 || this.transform.position.z <= -150)
             {

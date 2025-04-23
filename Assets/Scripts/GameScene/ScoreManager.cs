@@ -9,8 +9,8 @@ public class ScoreManager : MonoBehaviour
 
     public int p2Score;
 
-    [SerializeField]
-    public TextMeshProUGUI TextFrame;
+    // [SerializeField]
+    // public TextMeshProUGUI TextFrame;
 
     private Text t;
 

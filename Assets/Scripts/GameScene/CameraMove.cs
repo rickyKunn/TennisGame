@@ -21,6 +21,7 @@ public class CameraMove : NetworkBehaviour
     private string device;
     private async void Start()
     {
+        if (!HasStateAuthority) return;
         playerManager playermanager = FindObjectOfType<playerManager>();
         device = playermanager.Device;
         if (device != "PC") directionJoystick = GameObject.Find("DirectionJoystick").GetComponent<FloatingJoystick>();
@@ -32,6 +33,11 @@ public class CameraMove : NetworkBehaviour
         if (HasStateAuthority)
         {
             cam = Camera.main;
+        }
+        else
+        {
+            Destroy(this.GetComponent<PlayerMove>());
+            Destroy(this);
         }
     }
     void Update()

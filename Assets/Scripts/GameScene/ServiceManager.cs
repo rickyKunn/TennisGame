@@ -5,6 +5,7 @@ public class ServiceManager : NetworkBehaviour
 {
     public int ServerId;
 
+    [HideInInspector]
     public playerManager ManagerObject;
 
     private playerManager playermanager;
