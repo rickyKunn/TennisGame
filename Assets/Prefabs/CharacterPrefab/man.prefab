@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6165227845627873291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 341172342538205526}
+  m_Layer: 0
+  m_Name: InterpolationTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &341172342538205526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165227845627873291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2105498423724357944}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1923743839152070355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34,11 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       propertyPath: m_LocalRotation.y
@@ -50,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -70,7 +101,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 341172342538205526}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       insertIndex: -1
@@ -90,6 +124,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7717211964965694221}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1362096457234468419}
   m_SourcePrefab: {fileID: 100100000, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
 --- !u!1 &1617895100808717186 stripped
 GameObject:
@@ -143,6 +180,7 @@ MonoBehaviour:
   - {fileID: 5773648743648317183}
   - {fileID: 2181475687360193429}
   - {fileID: 7717211964965694221}
+  - {fileID: 1362096457234468419}
   SimulationBehaviours: []
 --- !u!114 &2181475687360193429
 MonoBehaviour:
@@ -168,7 +206,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617895100808717186}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
   m_Controller: {fileID: 9100000, guid: 4df906b2f914e42a689695d6da0ac1dd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -228,3 +266,38 @@ MonoBehaviour:
   girl1_exist: 0
   girl2_exist: 0
   id: 0
+--- !u!114 &1362096457234468419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617895100808717186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 0
+  InterpolationSpace: 0
+  InterpolationTarget: {fileID: 341172342538205526}
+  InterpolateErrorCorrection: 1
+  InterpolatedErrorCorrectionSettings:
+    MinRate: 3.3
+    MaxRate: 10
+    PosBlendStart: 0.25
+    PosBlendEnd: 1
+    PosMinCorrection: 0.025
+    PosTeleportDistance: 2
+    RotBlendStart: 0.1
+    RotBlendEnd: 0.5
+    RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
+--- !u!4 &2105498423724357944 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 942ba03571c0f45c5864398e477d8a86, type: 3}
+  m_PrefabInstance: {fileID: 1923743839152070355}
+  m_PrefabAsset: {fileID: 0}
