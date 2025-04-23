@@ -36,8 +36,8 @@ public class CameraMove : NetworkBehaviour
         }
         else
         {
-            Destroy(this.GetComponent<PlayerMove>());
-            Destroy(this);
+            // Destroy(this.GetComponent<PlayerMove>());
+            // Destroy(this);
         }
     }
     void Update()

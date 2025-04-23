@@ -90,6 +90,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fd6b996ec33f440458714b5211595c08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6978400128834870200}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fd6b996ec33f440458714b5211595c08, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7782096664371469592}
   m_SourcePrefab: {fileID: 100100000, guid: fd6b996ec33f440458714b5211595c08, type: 3}
 --- !u!1 &5836248074027050110 stripped
 GameObject:
@@ -132,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectInterest: 1
   DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 1
+  DestroyWhenStateAuthorityLeaves: 0
   AllowStateAuthorityOverride: 1
   AoiPositionSource: {fileID: 0}
   Flags: 2305
@@ -143,6 +146,7 @@ MonoBehaviour:
   - {fileID: 6604630442849185081}
   - {fileID: 8437351046479130092}
   - {fileID: 6978400128834870200}
+  - {fileID: -7782096664371469592}
   SimulationBehaviours: []
 --- !u!114 &8437351046479130092
 MonoBehaviour:
@@ -228,3 +232,38 @@ MonoBehaviour:
   girl1_exist: 0
   girl2_exist: 0
   id: 0
+--- !u!114 &-7782096664371469592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5836248074027050110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 0
+  InterpolationSpace: 0
+  InterpolationTarget: {fileID: 6608280520419770052}
+  InterpolateErrorCorrection: 1
+  InterpolatedErrorCorrectionSettings:
+    MinRate: 3.3
+    MaxRate: 10
+    PosBlendStart: 0.25
+    PosBlendEnd: 1
+    PosMinCorrection: 0.025
+    PosTeleportDistance: 2
+    RotBlendStart: 0.1
+    RotBlendEnd: 0.5
+    RotTeleportRadians: 1.5
+  UseLegacySharedModeInterpolation: 0
+  TargetInterpolationDelay: 0.03
+--- !u!4 &6608280520419770052 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fd6b996ec33f440458714b5211595c08, type: 3}
+  m_PrefabInstance: {fileID: 6647292582290102575}
+  m_PrefabAsset: {fileID: 0}

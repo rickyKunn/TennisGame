@@ -84,11 +84,11 @@ public class PlayerMove : NetworkBehaviour
             x = Input.GetAxisRaw("Horizontal");
             z = Input.GetAxisRaw("Vertical");
         }
-        else if (device != "")
-        {
-            x = MovingJoyStick.Horizontal;
-            z = MovingJoyStick.Vertical;
-        }
+        // else if (device != "") //仮コメントアウト
+        // {
+        //     x = MovingJoyStick.Horizontal;
+        //     z = MovingJoyStick.Vertical;
+        // }
 
         movingDirection = new Vector3(x, 0.0f, z);
         Quaternion q = Quaternion.AngleAxis(cam.transform.eulerAngles.y, Vector3.up);
