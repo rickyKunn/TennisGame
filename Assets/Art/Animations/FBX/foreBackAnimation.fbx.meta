@@ -57,8 +57,8 @@ ModelImporter:
       name: Service
       takeName: ForeBackServe|ForeBackServe.001
       internalID: 8452656475944696589
-      firstFrame: 2581
-      lastFrame: 2650
+      firstFrame: 2576
+      lastFrame: 2595
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
