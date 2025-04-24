@@ -164,7 +164,7 @@ PlayerSettings:
   androidMinAspectRatio: 1
   applicationIdentifier:
     Android: com.DefaultCompany.TennisGame
-    Standalone: com.DefaultCompany.TennisGame
+    Standalone: com.RickCompany.TennisGame
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -586,10 +586,10 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: No camera usage
   locationUsageDescription: 
-  microphoneUsageDescription: 
-  bluetoothUsageDescription: 
+  microphoneUsageDescription: No microphone usage
+  bluetoothUsageDescription: no bluetooth usage
   macOSTargetOSVersion: 11.0
   switchNMETAOverride: 
   switchNetLibKey: 

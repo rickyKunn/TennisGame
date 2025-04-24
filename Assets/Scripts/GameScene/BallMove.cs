@@ -121,9 +121,9 @@ public class BallMove : NetworkBehaviour
     void Start()
     {
         NetworkedSpeed = 1;
-        this.name = "Ball";
+        name = "Ball";
         _prevPosition = transform.position;
-        rBody = this.GetComponent<Rigidbody>();
+        rBody = GetComponent<Rigidbody>();
         mainPlayer = GameObject.Find("player");
         playermove = mainPlayer.GetComponent<PlayerMove>();
         girl_Network = mainPlayer.GetComponent<NetworkObject>();
@@ -134,14 +134,14 @@ public class BallMove : NetworkBehaviour
         scoremanager = Judger.GetComponent<ScoreManager>();
         id = playerservice.id;
         server_id = servicemanager.ServerId;
-        PlNwCh = this.GetComponent<PlayerNetworkedChange>();
-        BTM = this.GetComponent<BallTrailManager>();
+        PlNwCh = GetComponent<PlayerNetworkedChange>();
+        BTM = GetComponent<BallTrailManager>();
         audioSource = GetComponent<AudioSource>();
         beforeToss = false;
         tossed = false;
-        PlNetChange = this.GetComponent<PlayerNetworkedChange>();
+        PlNetChange = GetComponent<PlayerNetworkedChange>();
         //トス(サーバーのみRPC送信)
-        this.transform.position += new Vector3(0, 5, 0);
+        transform.position += new Vector3(0, 5, 0);
         //レシーバーはtrueに
         if (server_id != id)
         {
@@ -160,7 +160,7 @@ public class BallMove : NetworkBehaviour
 
             NPCPlayer = GameObject.Find("NPCPlayer");
             NPM = NPCPlayer.GetComponent<NPCPlayerMove>();
-            NPM.ball = this.gameObject;
+            NPM.ball = gameObject;
             id = 1;
         }
 
@@ -172,7 +172,7 @@ public class BallMove : NetworkBehaviour
         }
         UnityEngine.SceneManagement.Scene scene = playermanager.SubScene;
         physicsScene = scene.GetPhysicsScene();
-        SceneManager.MoveGameObjectToScene(this.gameObject, scene);
+        SceneManager.MoveGameObjectToScene(gameObject, scene);
         GameObject floar = GameObject.Find("floar");
         SceneManager.MoveGameObjectToScene(floar, scene);
 
@@ -206,7 +206,7 @@ public class BallMove : NetworkBehaviour
         if (service_hit == true)
         {
             HittingPlayer_change();
-            ball_kinds();
+            Ball_kinds();
             Ball_out();
             if ((id == server_id || NPCMode) && Play_End == false)
             {
@@ -246,7 +246,7 @@ public class BallMove : NetworkBehaviour
                 if (beforeToss == true)
                 {
                     NPM.TossWait(servePosKind);
-                    this.transform.position = NPCPlayer.transform.position + transform.up * 7 + NPCPlayer.transform.forward * 3.6f;
+                    transform.position = NPCPlayer.transform.position + transform.up * 7 + NPCPlayer.transform.forward * 3.6f;
                 }
             }
             if (tossed == false) Toss();
@@ -288,7 +288,7 @@ public class BallMove : NetworkBehaviour
             {
                 int pointedId = PointInfoList[i].PointedId;
                 string missName = PointInfoList[i].missKind;
-                this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
+                GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
                 if (NPCMode)
                 {
                     NPM.BattlePhaseChange(BattlePhase.Waiting);
@@ -304,7 +304,7 @@ public class BallMove : NetworkBehaviour
                     {
                         scoremanager.p2Score++;
                     }
-                    Rpc_InsPic(3, this.transform.position);
+                    Rpc_InsPic(3, transform.position);
                     floar_collision = 0;
                     Play_End = true;
                     service_hit = false;
@@ -326,7 +326,7 @@ public class BallMove : NetworkBehaviour
                     {
                         scoremanager.p2Score++;
                     }
-                    Rpc_InsPic(1, this.transform.position);
+                    Rpc_InsPic(1, transform.position);
                     floar_collision = 0;
                     Play_End = true;
                     service_hit = false;
@@ -369,7 +369,7 @@ public class BallMove : NetworkBehaviour
 
     public void Destroy()
     {
-        Runner.Despawn(this.GetComponent<NetworkObject>());
+        Runner.Despawn(GetComponent<NetworkObject>());
     }
     public bool NPCWillToss;
     private async void Toss()
@@ -378,7 +378,7 @@ public class BallMove : NetworkBehaviour
         {
             if (id == server_id)
             {
-                this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
+                GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
                 playermove.HP = playerAbility.hitPoint;
                 if (NPCMode) NPM.HP = NPCPlayerAbility.hitPoint;
                 EnterTossWait(); //物理挙動停止
@@ -474,7 +474,7 @@ public class BallMove : NetworkBehaviour
             }
             if (server_id == 2 && NPCMode)
             {
-                this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
+                GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
                 playermove.HP = playerAbility.hitPoint;
                 NPM.HP = NPCPlayerAbility.hitPoint;
                 Rpc_SetGravity(false);
@@ -572,7 +572,7 @@ public class BallMove : NetworkBehaviour
             {
                 if (End == true) return;
 
-                this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
+                GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
                 ExitTossWait();  //物理演算開始
                 floar_collision = 0;
                 ServiceJugde = false;
@@ -595,7 +595,7 @@ public class BallMove : NetworkBehaviour
 
             if (End == true) return;
 
-            this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
+            GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
 
             Rpc_SetGravity(true);
             floar_collision = 0;
@@ -627,8 +627,8 @@ public class BallMove : NetworkBehaviour
         bool hitted = true;
         if (kind == 1) //ドライブ
         {
-            Vector3 hit_point = new Vector3(this.transform.position.x, 21.6f, this.transform.position.z);
-            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
+            Vector3 hit_point = new Vector3(transform.position.x, 21.6f, transform.position.z);
+            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, transform.position));
             if (serve_distance < 2)
             {
                 rBody.linearVelocity = Vector3.zero;
@@ -654,8 +654,8 @@ public class BallMove : NetworkBehaviour
         if (kind == 3) //スライス
         {
             ball_hit = true;
-            Vector3 hit_point = new Vector3(this.transform.position.x, 21.6f, this.transform.position.z);
-            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
+            Vector3 hit_point = new Vector3(transform.position.x, 21.6f, transform.position.z);
+            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, transform.position));
 
             if (serve_distance < 2) //perfect
             {
@@ -700,8 +700,8 @@ public class BallMove : NetworkBehaviour
 
         }
         if (HasStateAuthority) PlNetChange.HitNumNetworked++;
-        this.GetComponent<PlayerNetworkedChange>().CurrentBall = (BallKinds)kind;
-        this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
+        GetComponent<PlayerNetworkedChange>().CurrentBall = (BallKinds)kind;
+        GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
         serve_Force = Caculate_Force(serveLength, servePower); //サーブのベクトル計算
         if (slicePower != 0) Rpc_Set_Slice(slicePower, true);  //重力変更(スライス)
         ServiceJugde = true;
@@ -713,7 +713,7 @@ public class BallMove : NetworkBehaviour
 
         if (NPCMode && hitted)
         {
-            NPCPlayer.GetComponent<NPCPlayerMove>().NPCDestination(NPCMovingPhase.Chasing, kind, this.transform.position, serve_Force, true);
+            NPCPlayer.GetComponent<NPCPlayerMove>().NPCDestination(NPCMovingPhase.Chasing, kind, transform.position, serve_Force, true);
         }
 
     }
@@ -730,8 +730,8 @@ public class BallMove : NetworkBehaviour
         bool hitted = true;
         if (kind == 1) //ドライブ
         {
-            Vector3 hit_point = new Vector3(this.transform.position.x, 21.6f, this.transform.position.z);
-            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
+            Vector3 hit_point = new Vector3(transform.position.x, 21.6f, transform.position.z);
+            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, transform.position));
             if (serve_distance < 2)
             {
                 rBody.linearVelocity = Vector3.zero;
@@ -757,8 +757,8 @@ public class BallMove : NetworkBehaviour
         if (kind == 3) //スライス
         {
             ball_hit = true;
-            Vector3 hit_point = new Vector3(this.transform.position.x, 21.6f, this.transform.position.z);
-            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, this.transform.position));
+            Vector3 hit_point = new Vector3(transform.position.x, 21.6f, transform.position.z);
+            float serve_distance = Mathf.Abs(Vector3.Distance(hit_point, transform.position));
 
             if (serve_distance < 2) //perfect
             {
@@ -799,8 +799,8 @@ public class BallMove : NetworkBehaviour
         }
 
         if (HasStateAuthority) PlNetChange.HitNumNetworked++;
-        this.GetComponent<PlayerNetworkedChange>().CurrentBall = (BallKinds)kind;
-        this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
+        GetComponent<PlayerNetworkedChange>().CurrentBall = (BallKinds)kind;
+        GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
         serve_Force = NPC_Serve_Caculate_Force(serveLength, servePower, 1); //サーブのベクトル計算
         if (slicePower != 0) Rpc_Set_Slice(slicePower, true);  //重力変更(スライス)
         ServiceJugde = true;
@@ -812,7 +812,7 @@ public class BallMove : NetworkBehaviour
 
         if (NPCMode && hitted)
         {
-            NPM.NPCDestination(NPCMovingPhase.Backing, kind, this.transform.position, serve_Force, true);
+            NPM.NPCDestination(NPCMovingPhase.Backing, kind, transform.position, serve_Force, true);
         }
 
     }
@@ -934,7 +934,7 @@ public class BallMove : NetworkBehaviour
     int AnimationKind;
     public bool drivePressed, slicePressed, lobPressed, dropPressed;
 
-    void ball_kinds()
+    void Ball_kinds()
     {
         if (ball_hit == false)
         {
@@ -942,12 +942,12 @@ public class BallMove : NetworkBehaviour
 
             if (id == 1)
             {
-                if (this.transform.position.x > mainPlayer.transform.position.x) AnimationKind = 1;
+                if (transform.position.x > mainPlayer.transform.position.x) AnimationKind = 1;
                 else AnimationKind = -1;
             }
             else if (id == 2)
             {
-                if (this.transform.position.x > mainPlayer.transform.position.x) AnimationKind = -1;
+                if (transform.position.x > mainPlayer.transform.position.x) AnimationKind = -1;
                 else AnimationKind = 1;
             }
 
@@ -958,25 +958,25 @@ public class BallMove : NetworkBehaviour
                 float timing_dis_poitSqrt;
                 if (id == 1)
                 {
-                    if (this.transform.position.z >= -5) return;
+                    if (transform.position.z >= -5) return;
                 }
                 else if (id == 2)
                 {
-                    if (this.transform.position.z <= 5) return;
+                    if (transform.position.z <= 5) return;
 
                 }
-                if (mainPlayer.transform.position.x < this.transform.position.x)
+                if (mainPlayer.transform.position.x < transform.position.x)
                 {
-                    timing_dis_pointX = this.transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
+                    timing_dis_pointX = transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
                 else
                 {
-                    timing_dis_pointX = Mathf.Abs(this.transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
+                    timing_dis_pointX = Mathf.Abs(transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
-                timing_dis = mainPlayer.transform.position.z - this.transform.position.z;
-                float timing_dis_x = this.transform.position.x - mainPlayer.transform.position.x; //0中心
+                timing_dis = mainPlayer.transform.position.z - transform.position.z;
+                float timing_dis_x = transform.position.x - mainPlayer.transform.position.x; //0中心
                 float timing_dis_sqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_x, 2));  //0中心
                 Ball_hitting_func(AnimationKind, timing_dis_sqrt, 1);
 
@@ -988,28 +988,28 @@ public class BallMove : NetworkBehaviour
 
                 if (id == 1)
                 {
-                    if (this.transform.position.z >= -5) return;
+                    if (transform.position.z >= -5) return;
 
                 }
                 else if (id == 2)
                 {
-                    if (this.transform.position.z <= 5) return;
+                    if (transform.position.z <= 5) return;
 
                 }
 
 
-                if (mainPlayer.transform.position.x < this.transform.position.x)
+                if (mainPlayer.transform.position.x < transform.position.x)
                 {
-                    timing_dis_pointX = this.transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
+                    timing_dis_pointX = transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
                 else
                 {
-                    timing_dis_pointX = Mathf.Abs(this.transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
+                    timing_dis_pointX = Mathf.Abs(transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
-                timing_dis = mainPlayer.transform.position.z - this.transform.position.z;
-                float timing_dis_x = this.transform.position.x - mainPlayer.transform.position.x; //0中心
+                timing_dis = mainPlayer.transform.position.z - transform.position.z;
+                float timing_dis_x = transform.position.x - mainPlayer.transform.position.x; //0中心
                 float timing_dis_sqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_x, 2));  //0中心
                 Ball_hitting_func(AnimationKind, timing_dis_sqrt, 2);
 
@@ -1020,28 +1020,28 @@ public class BallMove : NetworkBehaviour
                 float timing_dis_poitSqrt = 0;
                 if (id == 1)
                 {
-                    if (this.transform.position.z >= -5) return;
+                    if (transform.position.z >= -5) return;
 
                 }
                 else if (id == 2)
                 {
-                    if (this.transform.position.z <= 5) return;
+                    if (transform.position.z <= 5) return;
 
                 }
 
 
-                if (mainPlayer.transform.position.x < this.transform.position.x)
+                if (mainPlayer.transform.position.x < transform.position.x)
                 {
-                    timing_dis_pointX = this.transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
+                    timing_dis_pointX = transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
                 else
                 {
-                    timing_dis_pointX = Mathf.Abs(this.transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
+                    timing_dis_pointX = Mathf.Abs(transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
-                timing_dis = mainPlayer.transform.position.z - this.transform.position.z;
-                float timing_dis_x = this.transform.position.x - mainPlayer.transform.position.x; //0中心
+                timing_dis = mainPlayer.transform.position.z - transform.position.z;
+                float timing_dis_x = transform.position.x - mainPlayer.transform.position.x; //0中心
                 float timing_dis_sqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_x, 2));  //0中心
                 Ball_hitting_func(AnimationKind, timing_dis_sqrt, 3);
 
@@ -1052,28 +1052,28 @@ public class BallMove : NetworkBehaviour
                 float timing_dis_poitSqrt = 0;
                 if (id == 1)
                 {
-                    if (this.transform.position.z >= -5) return;
+                    if (transform.position.z >= -5) return;
 
                 }
                 else if (id == 2)
                 {
-                    if (this.transform.position.z <= 5) return;
+                    if (transform.position.z <= 5) return;
 
                 }
 
 
-                if (mainPlayer.transform.position.x < this.transform.position.x)
+                if (mainPlayer.transform.position.x < transform.position.x)
                 {
-                    timing_dis_pointX = this.transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
+                    timing_dis_pointX = transform.position.x - 5 - mainPlayer.transform.position.x; //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
                 else
                 {
-                    timing_dis_pointX = Mathf.Abs(this.transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
+                    timing_dis_pointX = Mathf.Abs(transform.position.x + 5 - mainPlayer.transform.position.x); //5中心
                     timing_dis_poitSqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_pointX, 2)); //5中心
                 }
-                timing_dis = mainPlayer.transform.position.z - this.transform.position.z;
-                float timing_dis_x = this.transform.position.x - mainPlayer.transform.position.x; //0中心
+                timing_dis = mainPlayer.transform.position.z - transform.position.z;
+                float timing_dis_x = transform.position.x - mainPlayer.transform.position.x; //0中心
                 float timing_dis_sqrt = Mathf.Sqrt(Mathf.Pow(timing_dis, 2) + Mathf.Pow(timing_dis_x, 2));  //0中心
                 Ball_hitting_func(AnimationKind, timing_dis_sqrt, 4);
 
@@ -1087,7 +1087,7 @@ public class BallMove : NetworkBehaviour
     {
         Physics.gravity = new Vector3(0, -50, 0);
         rBody.linearVelocity = Vector3.zero;
-        this.transform.position = position;
+        transform.position = position;
         rBody.AddForce(Force, ForceMode.Impulse);
     }
 
@@ -1114,14 +1114,14 @@ public class BallMove : NetworkBehaviour
 
         }
         Vector3 i_targetPosition = new Vector3(transform.position.x + Mathf.Sin(angle) * (timing_dis - transform.position.z), 0, timing_dis);
-        Vector2 startPos = new Vector2(this.transform.position.x, this.transform.position.z);
+        Vector2 startPos = new Vector2(transform.position.x, transform.position.z);
         Vector2 targetPos = new Vector2(i_targetPosition.x, i_targetPosition.z);
 
-        float distance = Vector3.Distance(i_targetPosition, this.transform.position);
+        float distance = Vector3.Distance(i_targetPosition, transform.position);
 
         float x = distance;
         float g = 50;
-        float y0 = this.transform.position.y;
+        float y0 = transform.position.y;
         float y = i_targetPosition.y;
         float t = ball_time;
 
@@ -1146,7 +1146,7 @@ public class BallMove : NetworkBehaviour
         float angle;
         float desX = 0;
         float playerPosition_x = mainPlayer.transform.position.x;
-        float ballPosX = this.transform.position.x;
+        float ballPosX = transform.position.x;
         float targetPosX = 0;
         if (playerPosition_x <= 0)
         {
@@ -1158,7 +1158,7 @@ public class BallMove : NetworkBehaviour
         }
         desX = targetPosX - ballPosX;
 
-        float desZ = timing_dis - this.transform.position.z;
+        float desZ = timing_dis - transform.position.z;
 
         angle = Mathf.Atan2(desZ, desX);
         if (ballkind == 3)
@@ -1176,15 +1176,15 @@ public class BallMove : NetworkBehaviour
         }
 
         Vector3 i_targetPosition = new Vector3(targetPosX, 0, timing_dis);
-        Vector2 startPos = new Vector2(this.transform.position.x, this.transform.position.z);
+        Vector2 startPos = new Vector2(transform.position.x, transform.position.z);
         Vector2 targetPos = new Vector2(i_targetPosition.x, i_targetPosition.z);
         var newObj = Instantiate(obj, i_targetPosition, Quaternion.identity);
         Destroy(newObj, 2f);
-        float distance = Vector3.Distance(i_targetPosition, this.transform.position);
+        float distance = Vector3.Distance(i_targetPosition, transform.position);
 
         float x = distance;
         float g = 50;
-        float y0 = this.transform.position.y;
+        float y0 = transform.position.y;
         float y = i_targetPosition.y;
         float t = ball_time;
 
@@ -1208,7 +1208,7 @@ public class BallMove : NetworkBehaviour
         float angle;
         float desX = 0;
         float playerPosition_x = mainPlayer.transform.position.x;
-        float ballPosX = this.transform.position.x;
+        float ballPosX = transform.position.x;
         float targetPosX = 0;
         if ((scoremanager.p1Score + scoremanager.p2Score) % 2 == 0)
         {
@@ -1221,7 +1221,7 @@ public class BallMove : NetworkBehaviour
 
         desX = targetPosX - ballPosX;
 
-        float desZ = timing_dis - this.transform.position.z;
+        float desZ = timing_dis - transform.position.z;
 
         angle = Mathf.Atan2(desZ, desX);
         if (ballkind == 3)
@@ -1239,15 +1239,15 @@ public class BallMove : NetworkBehaviour
         }
 
         Vector3 i_targetPosition = new Vector3(targetPosX, 0, timing_dis);
-        Vector2 startPos = new Vector2(this.transform.position.x, this.transform.position.z);
+        Vector2 startPos = new Vector2(transform.position.x, transform.position.z);
         Vector2 targetPos = new Vector2(i_targetPosition.x, i_targetPosition.z);
         var newObj = Instantiate(obj, i_targetPosition, Quaternion.identity);
         Destroy(newObj, 2f);
-        float distance = Vector3.Distance(i_targetPosition, this.transform.position);
+        float distance = Vector3.Distance(i_targetPosition, transform.position);
 
         float x = distance;
         float g = 50;
-        float y0 = this.transform.position.y;
+        float y0 = transform.position.y;
         float y = i_targetPosition.y;
         float t = ball_time;
 
@@ -1271,7 +1271,7 @@ public class BallMove : NetworkBehaviour
     {
         if ((server_id == id || NPCMode) && Play_End == false)
         {
-            if (this.transform.position.z >= 150 || this.transform.position.z <= -150)
+            if (transform.position.z >= 150 || transform.position.z <= -150)
             {
 
                 int ListNum = PointInfoList.Count;
@@ -1291,7 +1291,7 @@ public class BallMove : NetworkBehaviour
                 {
                     pointingPlayer = 1;
                 }
-                PointInfo newPointInfo = MakePointInfo(pointingPlayer, PlNetChange.HitNumNetworked, "Nothing", this.transform.position, 1);
+                PointInfo newPointInfo = MakePointInfo(pointingPlayer, PlNetChange.HitNumNetworked, "Nothing", transform.position, 1);
                 PointInfoList.Add(newPointInfo);
             }
 
@@ -1300,7 +1300,7 @@ public class BallMove : NetworkBehaviour
 
         if (server_id != id && !NPCMode && CurrentPhaseInt == 4 && Play_End == false)
         {
-            if (this.transform.position.z >= 150 || this.transform.position.z <= -150)
+            if (transform.position.z >= 150 || transform.position.z <= -150)
             {
                 PlNetChange.Rpc_MissNumChange();
                 Play_End = true;
@@ -1311,7 +1311,7 @@ public class BallMove : NetworkBehaviour
     //NPCのため全ての動作がServerIDと反転する
     public bool TryNPCHit(int AnimeKind, float timing_dis_sqrt, int ball_kind)
     {
-        Vector3 position_now = this.transform.position;
+        Vector3 position_now = transform.position;
         if (timing_dis_sqrt > playerAbility.range * 3) return false; //ダブり回避と遠すぎるボールの反応を無くす
         //if (id == server_id && serveBounded == false) return false; //レシーバーかつサーブがバウンドしてないときは反応しない
         if (CurrentPhaseInt != 3 && CurrentPhaseInt != 4) return false; //現在のフェーズ(列挙体)が4(Raley)の時意外は反応しない(サーバー,レシーバー問わない)
@@ -1328,11 +1328,11 @@ public class BallMove : NetworkBehaviour
         float TimeDic = 0.5f - 0.005f * DisFromNet; //ボレー
 
         float NSpeed = 1;
-        float DisY = this.transform.position.y;
+        float DisY = transform.position.y;
 
         if (DisY >= 20) return false; //高すぎるボールは見逃し
 
-        if (TimeDic <= 0 || Mathf.Abs(this.transform.position.z) >= 50)
+        if (TimeDic <= 0 || Mathf.Abs(transform.position.z) >= 50)
         {
             TimeDic = 0;//負の数にならないため
         }
@@ -1358,7 +1358,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = drivePower - TimeDic;
                     timing_long = 80;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = NPCPlayerAbility.drivePower;
@@ -1374,7 +1374,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = drivePower + 0.2f - TimeDic;
                     timing_long = 60;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = NPCPlayerAbility.drivePower;
@@ -1404,7 +1404,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = 2.5f;
                     timing_long = 85;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = 1.5f;
@@ -1413,7 +1413,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = 2f;
                     timing_long = 80;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = 1;
@@ -1437,7 +1437,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = dropTime;
                     timing_long = 30;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = 1.2f;
@@ -1446,7 +1446,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = dropTime + 0.2f;
                     timing_long = 35;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = 1;
@@ -1480,8 +1480,8 @@ public class BallMove : NetworkBehaviour
             {
                 ballkindsEnum = ((BallKinds)ball_kind);
             }
-            this.GetComponent<PlayerNetworkedChange>().Rpc_ChangeCurrentBallKinds(ballkindsEnum);
-            //this.GetComponent<PlayerNetworkedChange>().CurrentBall = ballkindsEnum;
+            GetComponent<PlayerNetworkedChange>().Rpc_ChangeCurrentBallKinds(ballkindsEnum);
+            //GetComponent<PlayerNetworkedChange>().CurrentBall = ballkindsEnum;
             //弾を打つ
             Quaternion rotate = Camera.main.transform.rotation;
             Vector3 Force = NPC_Caculate_Force(timing_long, timing_time, ball_kind);
@@ -1494,7 +1494,7 @@ public class BallMove : NetworkBehaviour
             if (HasStateAuthority) PlNetChange.HitNumNetworked++;
             else
             {
-                this.GetComponent<PlayerNetworkedChange>().Rpc_HitNumIncrement();
+                GetComponent<PlayerNetworkedChange>().Rpc_HitNumIncrement();
             }
             NPM.Player_Move_to_Ball(Lerp_pos, rotate, true);  //プレイヤーを球へ移動
             BTM.Rpc_ChangeColor(ball_kind, StrongHit); //Trail変更
@@ -1511,7 +1511,7 @@ public class BallMove : NetworkBehaviour
 
     private void Ball_hitting_func(int AnimeKind, float timing_dis_sqrt, int ball_kind)
     {//if (girl_Network.HasStateAuthority != true) return;
-        Vector3 position_now = this.transform.position;
+        Vector3 position_now = transform.position;
 
         if (server_id == id && service_hit == false) return; //サーバーがサーブを打っていなかったら反応しない
         if (server_id == id && tossed == false) return;      //↑のトスver
@@ -1530,11 +1530,11 @@ public class BallMove : NetworkBehaviour
 
         float TimeDic = 0.5f - 0.005f * DisFromNet; //ボレー
 
-        float DisY = this.transform.position.y;
+        float DisY = transform.position.y;
         float NSpeed = 1;
         if (DisY >= 20) return; //高すぎるボールは見逃し
 
-        if (TimeDic <= 0 || Mathf.Abs(this.transform.position.z) >= 50)
+        if (TimeDic <= 0 || Mathf.Abs(transform.position.z) >= 50)
         {
             TimeDic = 0;//負の数にならないため
         }
@@ -1562,7 +1562,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = drivePower - TimeDic;
                     timing_long = 80;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = playerAbility.drivePower;
@@ -1578,7 +1578,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = drivePower + 0.2f - TimeDic;
                     timing_long = 60;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = playerAbility.drivePower;
@@ -1610,7 +1610,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = 2.5f;
                     timing_long = 85;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = 1.5f;
@@ -1620,7 +1620,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = 2f;
                     timing_long = 80;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = 1;
@@ -1644,7 +1644,7 @@ public class BallMove : NetworkBehaviour
                     timing_time = dropTime;
                     timing_long = 30;
                     StrongHit = true;
-                    var newPerticle = Instantiate(perticle_perfect, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_perfect, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 2;
                     NSpeed = 1.2f;
@@ -1653,7 +1653,7 @@ public class BallMove : NetworkBehaviour
                 {
                     timing_time = dropTime + 0.2f;
                     timing_long = 35;
-                    var newPerticle = Instantiate(perticle_good, this.transform.position, this.transform.rotation);
+                    var newPerticle = Instantiate(perticle_good, transform.position, transform.rotation);
                     Destroy(newPerticle, 5f);
                     SoundKind = 1;
                     NSpeed = 1f;
@@ -1686,8 +1686,8 @@ public class BallMove : NetworkBehaviour
             {
                 ballkindsEnum = ((BallKinds)ball_kind);
             }
-            this.GetComponent<PlayerNetworkedChange>().Rpc_ChangeCurrentBallKinds(ballkindsEnum);
-            //this.GetComponent<PlayerNetworkedChange>().CurrentBall = ballkindsEnum;
+            GetComponent<PlayerNetworkedChange>().Rpc_ChangeCurrentBallKinds(ballkindsEnum);
+            //GetComponent<PlayerNetworkedChange>().CurrentBall = ballkindsEnum;
             //弾を打つ
             Quaternion rotate = Camera.main.transform.rotation;
             Vector3 Force = Caculate_Force(timing_long, timing_time);
@@ -1718,7 +1718,7 @@ public class BallMove : NetworkBehaviour
             if (HasStateAuthority) PlNetChange.HitNumNetworked++;
             else
             {
-                this.GetComponent<PlayerNetworkedChange>().Rpc_HitNumIncrement();
+                GetComponent<PlayerNetworkedChange>().Rpc_HitNumIncrement();
             }
 
             mainPlayer.gameObject.transform.rotation = rotate;
@@ -1730,7 +1730,7 @@ public class BallMove : NetworkBehaviour
 
             if (NPCMode)
             {
-                NPCPlayer.GetComponent<NPCPlayerMove>().NPCDestination(NPCMovingPhase.Chasing, ball_kind, this.transform.position, Force, false);
+                NPCPlayer.GetComponent<NPCPlayerMove>().NPCDestination(NPCMovingPhase.Chasing, ball_kind, transform.position, Force, false);
             }
             if (HasStateAuthority)
             {
@@ -1746,7 +1746,7 @@ public class BallMove : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Vector3 position_now = this.transform.position;
+        Vector3 position_now = transform.position;
         floar_collision = 0;
         if (server_id == id && service_hit == false) return;
         if (server_id == id && tossed == false) return;//トスver
@@ -1798,7 +1798,7 @@ public class BallMove : NetworkBehaviour
             if (device == "iOS") UnityCoreHapticsProxy.PlayContinuousHaptics(1, 0.6f, 0.01f);
 
         }
-        float Judge_pos = this.transform.position.x;
+        float Judge_pos = transform.position.x;
         if (collisionT >= 0.5f && collision.gameObject.name == "floar" && (server_id == id || NPCMode))
         {
             int incrementNum = 0;
@@ -1814,7 +1814,7 @@ public class BallMove : NetworkBehaviour
             bool fault = false;
             if (ServiceJugde == false && tossing == true) //トスを上げて,打たずに地面についた時
             {
-                this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
+                GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
                 playermove.StartAnimation(-10, 0);
                 fault = true;
                 FaultNum++;
@@ -1826,8 +1826,8 @@ public class BallMove : NetworkBehaviour
                 tossing = false;
                 timeManager = 0;
                 vel_turned = false;
-                if (FaultNum == 1) Rpc_InsPic(2, this.transform.position);
-                else if (FaultNum == 2) Rpc_InsPic(4, this.transform.position);
+                if (FaultNum == 1) Rpc_InsPic(2, transform.position);
+                else if (FaultNum == 2) Rpc_InsPic(4, transform.position);
 
                 if (FaultNum < 2) return;
 
@@ -1852,9 +1852,9 @@ public class BallMove : NetworkBehaviour
                 {
                     if (server_id == 1)
                     {
-                        if (this.transform.position.x >= -40 && this.transform.position.x <= 2)
+                        if (transform.position.x >= -40 && transform.position.x <= 2)
                         {
-                            this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
+                            GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Serve; //networkPropertyの列挙体
                             fault = false;
                         }
                         else
@@ -1866,7 +1866,7 @@ public class BallMove : NetworkBehaviour
                     }
                     else if (server_id == 2)
                     {
-                        if (this.transform.position.x >= -2 && this.transform.position.x <= 40)
+                        if (transform.position.x >= -2 && transform.position.x <= 40)
                         {
                             fault = false;
 
@@ -1881,7 +1881,7 @@ public class BallMove : NetworkBehaviour
                 {
                     if (server_id == 1)
                     {
-                        if (this.transform.position.x >= -2 && this.transform.position.x <= 40)
+                        if (transform.position.x >= -2 && transform.position.x <= 40)
                         {
                             fault = false;
                         }
@@ -1892,7 +1892,7 @@ public class BallMove : NetworkBehaviour
                     }
                     else if (server_id == 2)
                     {
-                        if (this.transform.position.x >= -40 && this.transform.position.x <= 2)
+                        if (transform.position.x >= -40 && transform.position.x <= 2)
                         {
                             fault = false;
                         }
@@ -1904,13 +1904,13 @@ public class BallMove : NetworkBehaviour
                 }
                 if (fault == false)
                 {
-                    this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Raley; //networkPropertyの列挙体
+                    GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Raley; //networkPropertyの列挙体
                     FaultNum = 0;
                     ServiceJugde = false;
                 }
                 else if (fault == true)
                 {
-                    this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
+                    GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
                     FaultNum++;
                     floar_collision = 0;
                     Play_End = true;
@@ -1919,8 +1919,8 @@ public class BallMove : NetworkBehaviour
                     beforeToss = false;
                     timeManager = 0;
                     vel_turned = false;
-                    if (FaultNum == 1) Rpc_InsPic(2, this.transform.position);
-                    else if (FaultNum == 2) Rpc_InsPic(4, this.transform.position);
+                    if (FaultNum == 1) Rpc_InsPic(2, transform.position);
+                    else if (FaultNum == 2) Rpc_InsPic(4, transform.position);
 
                     if (FaultNum < 2) return;
                 }
@@ -1952,7 +1952,7 @@ public class BallMove : NetworkBehaviour
                     pointingPlayer = 1;
                 }
                 print("2bounds");
-                PointInfo newPointInfo = MakePointInfo(pointingPlayer, PlNetChange.HitNumNetworked, "2bounds", this.transform.position, incrementNum);
+                PointInfo newPointInfo = MakePointInfo(pointingPlayer, PlNetChange.HitNumNetworked, "2bounds", transform.position, incrementNum);
                 PointInfoList.Add(newPointInfo);
                 //PointInfoList.Add(new )
                 //if (hitting_player == 1)
@@ -1963,8 +1963,8 @@ public class BallMove : NetworkBehaviour
                 //{
                 //    scoremanager.p1Score++;
                 //}
-                //this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
-                //Rpc_InsPic(3, this.transform.position);
+                //GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
+                //Rpc_InsPic(3, transform.position);
                 //floar_collision = 0;
                 //Play_End = true;
                 //service_hit = false;
@@ -1983,22 +1983,22 @@ public class BallMove : NetworkBehaviour
             else if (floar_collision == 1)
             {
                 print("out");
-                PointInfo newPointInfo = MakePointInfo(hitting_player, PlNetChange.HitNumNetworked, "out", this.transform.position, incrementNum);
+                PointInfo newPointInfo = MakePointInfo(hitting_player, PlNetChange.HitNumNetworked, "out", transform.position, incrementNum);
                 PointInfoList.Add(newPointInfo);
                 //if(Play_End == false)
                 //{
                 //    if (hitting_player == 1)
                 //    {
                 //        scoremanager.p1Score++;
-                //        Rpc_InsPic(1, this.transform.position);
+                //        Rpc_InsPic(1, transform.position);
 
                 //    }
                 //    else if (hitting_player == 2)
                 //    {
                 //        scoremanager.p2Score++;
-                //        Rpc_InsPic(1, this.transform.position);
+                //        Rpc_InsPic(1, transform.position);
                 //    }
-                //    this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
+                //    GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.RaleyEnd; //networkPropertyの列挙体
                 //    floar_collision = 0;
                 //    Play_End = true;
                 //    service_hit = false;
@@ -2102,6 +2102,7 @@ public class BallMove : NetworkBehaviour
                 return;
         }
         var newObj = Instantiate(obj, targetPos + transform.up, new Quaternion(0, 0, 0, 0));
+        Destroy(newObj, 3f);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -2117,7 +2118,7 @@ public class BallMove : NetworkBehaviour
             Rpc_Set_Slice(0, false);
         }
         rBody.linearVelocity = Vector3.zero;
-        this.transform.position = position;
+        transform.position = position;
         rBody.AddForce(Force, ForceMode.Impulse);
         if (SoundKind == 1) audioSource.PlayOneShot(hit1); //打球音
         else if (SoundKind == 2) audioSource.PlayOneShot(hit2);  //強打球音
