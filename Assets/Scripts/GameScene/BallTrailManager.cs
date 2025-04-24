@@ -51,6 +51,7 @@ public class BallTrailManager : NetworkBehaviour
         }
         else
         {
+            print("particle:" + particles[kind - 1]);
             newPer = particles[kind - 1];
             ParticleRen.material = Materials[kind - 1];
         }

@@ -96,6 +96,9 @@ public class BallMove : NetworkBehaviour
     SceneManager scenemanager;
     private const string TossPointName = "TossPoint";
 
+    [Tooltip("ボールの見た目に使っている全ての Renderer をここにドラッグ or 自動取得")]
+    [SerializeField] private Renderer[] _renderers;
+
     public struct PointInfo //判断同期構造体
     {
         public int PointedId; //得点したID
@@ -106,6 +109,15 @@ public class BallMove : NetworkBehaviour
     }
 
     public List<PointInfo> PointInfoList = new List<PointInfo>(); //構造体のリスト
+
+    void Awake()
+    {
+        // Inspector からセットされていなければ、自動で子階層から拾ってくる
+        if (_renderers == null || _renderers.Length == 0)
+        {
+            _renderers = GetComponentsInChildren<Renderer>();
+        }
+    }
     void Start()
     {
         NetworkedSpeed = 1;
@@ -184,7 +196,7 @@ public class BallMove : NetworkBehaviour
     }
     void Update()
     {
-        //Time.timeScale = 1.5f;
+        print(Physics.gravity);
         collisionTime += Time.deltaTime;
         timeManager += Time.deltaTime;
         Receiver_functions();
@@ -245,6 +257,17 @@ public class BallMove : NetworkBehaviour
             dropPressed = false;
             lobPressed = false;
         }
+
+
+        //TossWaitフェーズの時はボールを透明にする(改善が必要)
+        var phase = GetComponent<PlayerNetworkedChange>().CurrentPhase;
+
+        bool visible = phase != PlayPhase.TossWait;
+        for (int i = 0; i < _renderers.Length; i++)
+        {
+            _renderers[i].enabled = visible;
+        }
+
     }
 
 
@@ -357,7 +380,7 @@ public class BallMove : NetworkBehaviour
                 this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.TossWait; //networkPropertyの列挙体
                 playermove.HP = playerAbility.hitPoint;
                 if (NPCMode) NPM.HP = NPCPlayerAbility.hitPoint;
-                EnterTossWait(); //物理挙動停止+TossPoint子オブジェクトに結びつけ
+                EnterTossWait(); //物理挙動停止
                 BTM.Rpc_ChangeColor(0, false);//Trailを透明に
                 print("PLNWCH:" + PlNwCh);
                 PlNwCh.ScoreChange(scoremanager.p1Score, scoremanager.p2Score);
@@ -538,9 +561,9 @@ public class BallMove : NetworkBehaviour
         if (device == "PC" && (
             Input.GetKeyDown(KeyCode.LeftShift) ||
             Input.GetKeyDown(KeyCode.Space) ||
-            Input.GetKeyDown(KeyCode.LeftShift) ||
-            Input.GetMouseButtonDown(0) ||
-            Input.GetMouseButtonDown(1)
+            Input.GetKeyDown(KeyCode.LeftShift)
+            // Input.GetMouseButtonDown(0) ||
+            // Input.GetMouseButtonDown(1)
             )
             || device != "PC" && (slicePressed == true || drivePressed == true))
         {
@@ -549,7 +572,7 @@ public class BallMove : NetworkBehaviour
                 if (End == true) return;
 
                 this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
-                ExitTossWait();  //物理演算開始+子オブジェクト解除
+                ReleaseToss();
                 floar_collision = 0;
                 ServiceJugde = false;
                 beforeToss = false;
@@ -559,6 +582,7 @@ public class BallMove : NetworkBehaviour
                 Play_End = false;
                 playermove.StartAnimation(3, 0);
                 mainPlayer.transform.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+                Rpc_ResetGravity();
                 Rpc_toss_addForce(transform.up * 40, mainPlayer.transform.position + transform.up * 5);
 
             }
@@ -2037,62 +2061,17 @@ public class BallMove : NetworkBehaviour
     }
 
     /// <summary>
-    /// ローカルで親子付け／解除を行うメソッド
-    /// </summary>
-    private void SetTossAttachmentLocal(bool attach)
-    {
-        if (mainPlayer == null)
-        {
-            Debug.LogWarning("BallMove: mainPlayer が未設定");
-            return;
-        }
-
-        if (attach)
-        {
-            // mainPlayer の階層から TossPoint を探す
-            Transform tossPoint = mainPlayer.transform.Find(TossPointName);
-            if (tossPoint == null)
-            {
-                Debug.LogWarning($"BallMove: {mainPlayer.name} の子階層に \"{TossPointName}\" が見つかりません");
-                return;
-            }
-
-            // TossPoint の子にくくりつけ
-            transform.SetParent(tossPoint, worldPositionStays: false);
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-        }
-        else
-        {
-            // 親子関係を外し、ワールド座標を保持
-            transform.SetParent(null, worldPositionStays: true);
-        }
-    }
-
-    /// <summary>
-    /// 全クライアントで親子付け／解除を同期する RPC
-    /// </summary>
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = true, TickAligned = false)]
-    private void Rpc_SetTossAttachment(bool attach)
-    {
-        SetTossAttachmentLocal(attach);
-    }
-
-    /// <summary>
     /// ラリー終了後の TossWait フェーズに入るときに呼ぶ
     /// （物理停止や位置リセットなどの後で）
     /// </summary>
     public void EnterTossWait()
     {
         Rpc_SetGravity(false);
-        // 全プレイヤーにくくり付けを同期
-        Rpc_SetTossAttachment(true);
     }
     public void ExitTossWait()
     {
         Rpc_SetGravity(true);
-        // 全プレイヤーにくくり付けを同期
-        Rpc_SetTossAttachment(false);
+
     }
 
     /// <summary>
@@ -2122,6 +2101,36 @@ public class BallMove : NetworkBehaviour
                 return;
         }
         var newObj = Instantiate(obj, targetPos + transform.up, new Quaternion(0, 0, 0, 0));
+    }
+
+    /// <summary>
+    /// 全クライアントで一度だけトスのインパルスを与える RPC
+    /// </summary>
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_TossBall(Vector3 force, Vector3 position)
+    {
+        Physics.gravity = new Vector3(0f, -50f, 0f);
+
+        rBody.isKinematic = false;
+        rBody.useGravity = true;
+        rBody.WakeUp();
+
+        transform.position = position;
+        rBody.AddForce(force, ForceMode.Impulse);
+    }
+
+    /// <summary>
+    /// Toss を開始するときに呼ぶ
+    /// </summary>
+    public void ReleaseToss()
+    {
+        NetworkedSpeed = 1f;
+        Vector3 tossPos = mainPlayer.transform.position
+                             + mainPlayer.transform.up * 7f
+                             + mainPlayer.transform.forward * 3.6f;
+
+        Vector3 tossForce = mainPlayer.transform.up * 40f;
+        Rpc_TossBall(tossForce, tossPos);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -2160,17 +2169,16 @@ public class BallMove : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_SetGravity(bool enableGravity)
+    private void Rpc_SetGravity(bool enable)
     {
         if (rBody == null) return;
 
-        rBody.useGravity = enableGravity;
-
-        if (!enableGravity)
+        if (!enable)
         {
-            rBody.linearVelocity = Vector3.zero;
-            rBody.angularVelocity = Vector3.zero;
-            rBody.isKinematic = true;    // 物理演算を完全停止
+            // 重力オフ + 慣性リセット + 物理停止
+            rBody.useGravity = false;
+            rBody.Sleep();
+            rBody.isKinematic = true;
         }
         else
         {
@@ -2185,5 +2193,10 @@ public class BallMove : NetworkBehaviour
         NetworkedSpeed = sp;
     }
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_ResetGravity()
+    {
+        Physics.gravity = new Vector3(0f, -50f, 0f);
+    }
 
 }
