@@ -1,6 +1,6 @@
 #  Online 3D Tennis Game
 
-![Unity](https://img.shields.io/badge/Unity-2021.3-blue) ![Photon Fusion](https://img.shields.io/badge/Photon%20Fusion-v1.0-green) 
+![Unity](https://img.shields.io/badge/Unity-blue) ![Photon Fusion](https://img.shields.io/badge/Photon%20Fusion-green) 
 ---
 
 ## プロジェクト概要
