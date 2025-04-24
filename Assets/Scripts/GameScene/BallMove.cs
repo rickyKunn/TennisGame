@@ -196,7 +196,7 @@ public class BallMove : NetworkBehaviour
     }
     void Update()
     {
-        print(Physics.gravity);
+        //Time.timeScale = 1.5f;
         collisionTime += Time.deltaTime;
         timeManager += Time.deltaTime;
         Receiver_functions();
@@ -572,7 +572,7 @@ public class BallMove : NetworkBehaviour
                 if (End == true) return;
 
                 this.GetComponent<PlayerNetworkedChange>().CurrentPhase = PlayPhase.Toss; //networkPropertyの列挙体
-                ReleaseToss();
+                ExitTossWait();  //物理演算開始
                 floar_collision = 0;
                 ServiceJugde = false;
                 beforeToss = false;
@@ -582,7 +582,6 @@ public class BallMove : NetworkBehaviour
                 Play_End = false;
                 playermove.StartAnimation(3, 0);
                 mainPlayer.transform.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
-                Rpc_ResetGravity();
                 Rpc_toss_addForce(transform.up * 40, mainPlayer.transform.position + transform.up * 5);
 
             }
@@ -2103,36 +2102,6 @@ public class BallMove : NetworkBehaviour
         var newObj = Instantiate(obj, targetPos + transform.up, new Quaternion(0, 0, 0, 0));
     }
 
-    /// <summary>
-    /// 全クライアントで一度だけトスのインパルスを与える RPC
-    /// </summary>
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_TossBall(Vector3 force, Vector3 position)
-    {
-        Physics.gravity = new Vector3(0f, -50f, 0f);
-
-        rBody.isKinematic = false;
-        rBody.useGravity = true;
-        rBody.WakeUp();
-
-        transform.position = position;
-        rBody.AddForce(force, ForceMode.Impulse);
-    }
-
-    /// <summary>
-    /// Toss を開始するときに呼ぶ
-    /// </summary>
-    public void ReleaseToss()
-    {
-        NetworkedSpeed = 1f;
-        Vector3 tossPos = mainPlayer.transform.position
-                             + mainPlayer.transform.up * 7f
-                             + mainPlayer.transform.forward * 3.6f;
-
-        Vector3 tossForce = mainPlayer.transform.up * 40f;
-        Rpc_TossBall(tossForce, tossPos);
-    }
-
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void Rpc_Ball_add_vel(Vector3 Force, Vector3 position, int SoundKind, int Ballkinds, float sliceStrenth)
     {
@@ -2169,16 +2138,17 @@ public class BallMove : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_SetGravity(bool enable)
+    private void Rpc_SetGravity(bool enableGravity)
     {
         if (rBody == null) return;
 
-        if (!enable)
+        rBody.useGravity = enableGravity;
+
+        if (!enableGravity)
         {
-            // 重力オフ + 慣性リセット + 物理停止
-            rBody.useGravity = false;
-            rBody.Sleep();
-            rBody.isKinematic = true;
+            rBody.linearVelocity = Vector3.zero;
+            rBody.angularVelocity = Vector3.zero;
+            rBody.isKinematic = true;    // 物理演算を完全停止
         }
         else
         {
@@ -2193,10 +2163,5 @@ public class BallMove : NetworkBehaviour
         NetworkedSpeed = sp;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_ResetGravity()
-    {
-        Physics.gravity = new Vector3(0f, -50f, 0f);
-    }
 
 }
