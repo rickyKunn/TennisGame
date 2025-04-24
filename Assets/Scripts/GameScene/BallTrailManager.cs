@@ -15,22 +15,22 @@ public class BallTrailManager : NetworkBehaviour
     private Material[] Materials = new Material[4];
 
     [SerializeField]
-    private GameObject ShitParticle;
+    private GameObject StrongHitParticle;
 
-    private GameObject newShit;
+    private GameObject newStrongHitObj;
     private GameObject newPer;
     void Start()
     {
-        ParticleRen = ShitParticle.GetComponent<ParticleSystemRenderer>();
+        ParticleRen = StrongHitParticle.GetComponent<ParticleSystemRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void Rpc_ChangeColor(int kind ,bool Strong)
+    public void Rpc_ChangeColor(int kind, bool Strong)
     {
         //TR = this.gameObject.GetComponent<TrailRenderer>();
         //Destroy(TR);
@@ -38,16 +38,16 @@ public class BallTrailManager : NetworkBehaviour
         //trailMaterial = trailRenderer.material;
         //TR.endColor = Color.clear;
         if (newPer != null) Destroy(newPer);
-        if (newShit != null)
+        if (newStrongHitObj != null)
         {
-            Destroy(newShit);
-            newShit = null;
+            Destroy(newStrongHitObj);
+            newStrongHitObj = null;
         }
 
         if (kind == 0 || kind >= 6)
         {
             newPer = null;
-            newShit = null;
+            newStrongHitObj = null;
         }
         else
         {
@@ -61,11 +61,11 @@ public class BallTrailManager : NetworkBehaviour
             newPer.transform.position = this.transform.position;
             newPer.transform.parent = this.transform;
         }
-        if(newShit == null && Strong == true)
+        if (newStrongHitObj == null && Strong == true)
         {
-            newShit = Instantiate(ShitParticle);
-            newShit.transform.position = this.transform.position;
-            newShit.transform.parent = this.gameObject.transform;
+            newStrongHitObj = Instantiate(StrongHitParticle);
+            newStrongHitObj.transform.position = this.transform.position;
+            newStrongHitObj.transform.parent = this.gameObject.transform;
         }
     }
 }

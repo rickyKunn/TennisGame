@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22,11 +22,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalRotation.y
@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45158e88d57244831b8e9facbfa34929, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -326,7 +326,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 506d5fbd6987643feb17c296974b2e3c, type: 2}
   - {fileID: 2100000, guid: ce8c5a97e0ad840c78383c5aff87ab19, type: 2}
   - {fileID: 2100000, guid: 5ea303510314140bb9f6cf49593f9554, type: 2}
-  ShitParticle: {fileID: 5734893887466011793, guid: 9446588c5ea124f6b9bcd886768943b0, type: 3}
+  StrongHitParticle: {fileID: 5734893887466011793, guid: 9446588c5ea124f6b9bcd886768943b0, type: 3}
 --- !u!54 &-5512221344888986861
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -458,7 +458,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3763982019876497008}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2c4d1b5d93f1d4000b499700874c5155, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -471,4 +471,4 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.00996255
-  m_Center: {x: -0.0000000023283064, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
