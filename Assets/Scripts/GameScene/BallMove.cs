@@ -220,7 +220,8 @@ public class BallMove : NetworkBehaviour
             if (beforeToss == true)
             {
                 playermove.TossWait(servePosKind);
-                this.transform.position = mainPlayer.transform.position + transform.up * 7 + mainPlayer.transform.forward * 3.6f;
+                transform.position = mainPlayer.transform.position + new Vector3(0, 5, 0);
+
             }
             if (service_hit == false && tossed == true)
             {
@@ -582,7 +583,8 @@ public class BallMove : NetworkBehaviour
                 Play_End = false;
                 playermove.StartAnimation(3, 0);
                 mainPlayer.transform.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
-                Rpc_toss_addForce(transform.up * 40, mainPlayer.transform.position + transform.up * 5);
+                transform.position = mainPlayer.transform.position + new Vector3(0, 5, 0);
+                Rpc_toss_addForce(Vector3.up * 40, mainPlayer.transform.position + new Vector3(0, 5, 0));
 
             }
 
@@ -605,7 +607,7 @@ public class BallMove : NetworkBehaviour
             Play_End = false;
             NPM.StartAnimation(3, 0);
             //NPCPlayer.transform.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
-            Rpc_toss_addForce(transform.up * 40, NPCPlayer.transform.position + transform.up * 5);
+            Rpc_toss_addForce(Vector3.up * 40, NPCPlayer.transform.position + transform.up * 5);
 
 
             NPCWillToss = false;
@@ -2152,8 +2154,12 @@ public class BallMove : NetworkBehaviour
         }
         else
         {
+            rBody.Sleep();
+            rBody.linearVelocity = Vector3.zero;
+            rBody.angularVelocity = Vector3.zero;
             rBody.isKinematic = false;
             rBody.useGravity = true;
+            rBody.WakeUp();
         }
     }
 
