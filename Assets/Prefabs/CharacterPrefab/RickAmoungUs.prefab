@@ -161,6 +161,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da996e1dc09084c7d8f86c4d852fcefa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9188654792630117320}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da996e1dc09084c7d8f86c4d852fcefa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -495792943850181520}
   m_SourcePrefab: {fileID: 100100000, guid: da996e1dc09084c7d8f86c4d852fcefa, type: 3}
 --- !u!4 &3821616133870017966 stripped
 Transform:
@@ -225,6 +228,7 @@ MonoBehaviour:
   - {fileID: 527747432692402462}
   - {fileID: 927829110022644960}
   - {fileID: 9188654792630117320}
+  - {fileID: -495792943850181520}
   SimulationBehaviours: []
 --- !u!114 &527747432692402462
 MonoBehaviour:
@@ -340,3 +344,35 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
+--- !u!114 &-495792943850181520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629164272585486877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WordOffset: 0
+  WordCount: 0
+  _interpolationDataSource: 2
+  Animator: {fileID: -8407922781049636990}
+  TotalWords: 5
+  SyncSettings: 127
+  FloatAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  TimeAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: 1061325578
+  WeightAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  StateHashes: 000000008a18fce4b9abd9d3ee08ec06f499d6ec47c1beeb159bc1c2aeb2a1a62cfded23ac5b2b7b9fe80e4cac6a2c5a9fd9096d900fb37e1240fffb9495a6f410b6701bf619bc87723a6a68411119c8c532cf27958341e27e40c91f
+  TriggerHashes: 00000000ac5b2b7bac6a2c5a47c1beebee08ec06aeb2a1a6900fb37e050f0bef9495a6f4f619bc87411119c8

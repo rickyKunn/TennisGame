@@ -25,7 +25,23 @@ public class CameraMove : NetworkBehaviour
         playerManager playermanager = FindObjectOfType<playerManager>();
         device = playermanager.Device;
         if (device != "PC") directionJoystick = GameObject.Find("DirectionJoystick").GetComponent<FloatingJoystick>();
-        FirstPos = transform.position + Vector3.up * 23 - cam.transform.forward * 45;
+        var playermove = this.GetComponent<PlayerMove>();
+        print(playermove.id);
+        if (playermove.id == 2)
+        {
+            FirstPos = transform.position + Vector3.up * 23 + cam.transform.forward * 45;
+            cam.transform.RotateAround(transform.position, Vector3.up, 180f); //矢印キー
+
+        }
+        else if (playermove.id == 1)
+        {
+            FirstPos = transform.position + Vector3.up * 23 - cam.transform.forward * 45;
+
+        }
+        else
+        {
+            Debug.LogWarning("What is players id!?!?");
+        }
         firstAwait = true;
     }
     public override void Spawned()

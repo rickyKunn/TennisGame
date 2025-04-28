@@ -718,7 +718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myPicture:
   - {fileID: 21300000, guid: 4cc25e84a5a84412fb956e280249131b, type: 3}
-  - {fileID: 21300000, guid: c29671b1c7a6746aa97a177c21f5c15a, type: 3}
+  - {fileID: 21300000, guid: a27bddd3358634b52808ba229b9a8591, type: 3}
   - {fileID: 21300000, guid: e338673b61a5744d79e3e551160ecb04, type: 3}
   - {fileID: 21300000, guid: 7331599f8c3f446eb867ea6059c26d8d, type: 3}
 --- !u!1 &702873041
@@ -772,7 +772,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonImages:
   - {fileID: 21300000, guid: 4cc25e84a5a84412fb956e280249131b, type: 3}
-  - {fileID: 21300000, guid: c29671b1c7a6746aa97a177c21f5c15a, type: 3}
+  - {fileID: 21300000, guid: a27bddd3358634b52808ba229b9a8591, type: 3}
   - {fileID: 21300000, guid: e338673b61a5744d79e3e551160ecb04, type: 3}
   - {fileID: 21300000, guid: 7331599f8c3f446eb867ea6059c26d8d, type: 3}
   characterButton: {fileID: 9086507364877387236, guid: f518d812715ae4e3ca88e5e4bed19f0e, type: 3}
@@ -956,7 +956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &891133967
 RectTransform:
   m_ObjectHideFlags: 0

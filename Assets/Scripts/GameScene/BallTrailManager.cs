@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using System.Linq;
 
 public class BallTrailManager : NetworkBehaviour
 {
@@ -51,7 +52,12 @@ public class BallTrailManager : NetworkBehaviour
         }
         else
         {
-            print("particle:" + particles[kind - 1]);
+            if (kind > particles.Count())
+            {
+                print("particle:" + kind);
+                return;
+            }
+
             newPer = particles[kind - 1];
             ParticleRen.material = Materials[kind - 1];
         }
