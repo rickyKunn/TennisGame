@@ -14,7 +14,7 @@
 
 ## プレイ画面
 
- - 準備中
+https://youtu.be/bSSGPrRS-Fc
 
 ---
 
