@@ -7,6 +7,7 @@ using TMPro;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.UI;
 
 
 public class WaitingManager : NetworkBehaviour
@@ -18,6 +19,8 @@ public class WaitingManager : NetworkBehaviour
     private bool canPlay;
     [SerializeField] public TextMeshProUGUI WaitingText = null;
     [SerializeField] private TextMeshProUGUI StartText = null;
+    [SerializeField] private Button StartButton = null;
+
     [SerializeField] private NetworkObject NetworkData;
     [SerializeField] private GameObject NetworkDatas;
     public bool characterChosen;
@@ -78,6 +81,7 @@ public class WaitingManager : NetworkBehaviour
             NPCText.text = "Online\nMODE";
             canPlay = true;
             WaitingText.text = $"プレイヤー人数:{ThisRoomPlayerNum}";
+            StartButton.interactable = true;
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
             MyNetworkData.GetComponent<NetworkDatas>().IdChanged(thisId); //プレイヤー人数が更新されたら0.5sec待ってからキャラクターの名前を更新
         }
@@ -87,8 +91,9 @@ public class WaitingManager : NetworkBehaviour
             {
                 canPlay = true;
             }
-            WaitingText.text = $"{ThisRoomPlayerNum}Players..";
+            WaitingText.text = $"プレイヤー人数:{ThisRoomPlayerNum}";
             canPlay = false;
+            StartButton.interactable = false;
         }
 
 

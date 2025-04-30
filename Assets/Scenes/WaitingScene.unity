@@ -1662,6 +1662,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   WaitingText: {fileID: 398820718}
   StartText: {fileID: 68199328}
+  StartButton: {fileID: 1337967019}
   NetworkData: {fileID: 0}
   NetworkDatas: {fileID: 4643134777952517686, guid: d1cd54536dcd744d49739eb6ed65074e, type: 3}
   characterChosen: 0
