@@ -26,12 +26,11 @@ public class PlayerService : NetworkBehaviour
         server_id = servicemanager.ServerId;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (HasStateAuthority)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetMouseButtonDown(0))
             {
                 ball_exist = GameObject.Find("Ball") == true ? true : false; //押されるたびにボールの有無を更新(ボールは2秒後に消されるため)
                 server_id = servicemanager.ServerId; //ボタンが押されるたび更新

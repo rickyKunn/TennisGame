@@ -10,9 +10,6 @@ public class ServiceManager : NetworkBehaviour
 
     private playerManager playermanager;
 
-    public int id;
-
-    private bool collect;
 
     public bool serve_changed;
 

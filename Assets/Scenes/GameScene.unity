@@ -1699,7 +1699,6 @@ GameObject:
   - component: {fileID: 951758573}
   - component: {fileID: 951758575}
   - component: {fileID: 951758574}
-  - component: {fileID: 951758576}
   m_Layer: 0
   m_Name: service
   m_TagString: Untagged
@@ -1745,7 +1744,6 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 951758575}
-  - {fileID: 951758576}
   SimulationBehaviours: []
 --- !u!114 &951758575
 MonoBehaviour:
@@ -1764,28 +1762,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   ServerId: 0
   ManagerObject: {fileID: 0}
-  id: 0
   serve_changed: 0
---- !u!114 &951758576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 951758571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20b0a96db4c54fceb93806b667a7b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WordOffset: 0
-  WordCount: 0
-  _interpolationDataSource: 0
-  ball: {fileID: 4235545598600243934, guid: e4c81d19439b94b35b08b8c4f4316648, type: 3}
-  ball_exist: 0
-  girl1_exist: 0
-  girl2_exist: 0
-  id: 0
 --- !u!1 &1126470723
 GameObject:
   m_ObjectHideFlags: 0

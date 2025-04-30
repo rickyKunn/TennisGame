@@ -227,7 +227,7 @@ public class BallMove : NetworkBehaviour
             {
                 if (device == "PC")
                 {
-                    if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetMouseButtonDown(0)) Service(1);
+                    if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetMouseButtonDown(0)) Service(1);
                     else if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) Service(3);
                 }
                 else
@@ -561,8 +561,8 @@ public class BallMove : NetworkBehaviour
 
         if (device == "PC" && (
             Input.GetKeyDown(KeyCode.LeftShift) ||
-            Input.GetKeyDown(KeyCode.Space) ||
-            Input.GetKeyDown(KeyCode.LeftShift)
+            Input.GetKeyDown(KeyCode.RightShift) ||
+            Input.GetKeyDown(KeyCode.Space)
             // Input.GetMouseButtonDown(0) ||
             // Input.GetMouseButtonDown(1)
             )
@@ -952,7 +952,7 @@ public class BallMove : NetworkBehaviour
             }
 
 
-            if (device == "PC" && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetMouseButtonDown(0)) || device != "PC" && (drivePressed))
+            if (device == "PC" && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.RightShift)) || device != "PC" && (drivePressed))
             {
                 float timing_dis_pointX;
                 float timing_dis_poitSqrt;
