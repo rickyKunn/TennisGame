@@ -11,10 +11,9 @@
 
 
 ---
-
 ## プレイ動画
 
-[![プレイ動画](docs/TennisGameSourceImage.png)](https://youtu.be/bSSGPrRS-Fc)
+[![プレイ動画](docs/TennisGameSourceImage.png)](https://www.youtube.com/watch?v=bSSGPrRS-Fc)
 
 ---
 
