@@ -12,9 +12,9 @@
 
 ---
 
-## プレイ画面
+## プレイ動画
 
-https://youtu.be/bSSGPrRS-Fc
+[![プレイ動画](docs/TennisGameSourceImage.png)](https://youtu.be/bSSGPrRS-Fc)
 
 ---
 
