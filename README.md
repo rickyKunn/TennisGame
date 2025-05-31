@@ -49,4 +49,26 @@
 
 - **ゲームエンジン**：Unity
 - **ネットワーク**：Photon Fusion  
-- **プログラミング言語**：C# (Unity)   
+- **プログラミング言語**：C# (Unity)
+
+---
+## ライセンスおよびクレジット
+
+このリポジトリは、ポートフォリオおよび選考目的での閲覧専用として公開しています。
+
+- 商用利用は禁止です  
+- 改変や再配布は禁止です  
+- 閲覧および参照は自由ですが、許可なく他用途に使用しないでください
+
+その他の目的での使用を希望される場合は、下記までご連絡ください。  
+**kobayashiritsuki@gmail.com**
+
+---
+
+本プロジェクトでは、ユニティ・テクノロジーズ・ジャパンが提供する「Unity-Chan」キャラクターおよび関連アセットを使用しています。  
+使用にあたっては、以下のライセンスに従っています：  
+[Unity-Chan ライセンス（日本語）](https://unity-chan.com/contents/license_jp/)  
+[Unity-Chan License (English)](https://unity-chan.com/contents/license_en/)
+
+© 2025 小林立樹  
+© Unity Technologies Japan / Unity-Chan Project. All rights reserved.
